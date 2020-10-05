@@ -2,7 +2,7 @@
 
   <div class="flex justify-center">
     <div class="form flex flex-col justify-center">
-      <div class="text-center text-6xl text-gray-700 mb-4">Log in</div>
+      <div class="text-center text-5xl text-gray-700 mb-4">Log in</div>
       <div class="text-center text-gray-600 text-sm mb-10">Welcome to Prego building registration manager! <br></div>
       <form class="mb-4 flex flex-col justify-between">
         <div class="mb-4">
@@ -49,7 +49,7 @@
 <script>
 
     export default {
-      name: "Register",
+      name: "LogIn",
 
       data () {
           return {

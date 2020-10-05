@@ -7,12 +7,16 @@
             <router-link to="/" class="lg:mr-16">
                 <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Back</h2>
             </router-link>
-            <router-link to="/register" class="lg:mr-16">
-                <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Register</h2>
+            <router-link to="/company/create" class="lg:mr-16">
+                <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Create company</h2>
             </router-link>
-          <router-link to="/login" class="lg:mr-16">
-            <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Log in</h2>
-          </router-link>
+            <router-link to="/employee/create" class="lg:mr-16">
+                <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Create employee</h2>
+            </router-link>
+            <router-link to="/login" class="lg:mr-16">
+                <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Log in</h2>
+            </router-link>
+
         </div>
     </div>
 </template>
