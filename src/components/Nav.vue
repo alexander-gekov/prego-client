@@ -19,6 +19,9 @@
           <router-link to="/admin/dashboard" class="lg:mr-16">
             <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Dashboard</h2>
           </router-link>
+          <router-link to="/companies" class="lg:mr-16">
+            <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Companies Home</h2>
+          </router-link>
 
 
         </div>

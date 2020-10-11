@@ -4,6 +4,7 @@ import CreateCompany from "@/components/CreateCompany";
 import Login from "@/components/Login";
 import CreateEmployee from "@/components/CreateEmployee";
 import DashboardBuildingOwner from '@/components/buildingOwner/Dashboard'
+import CompaniesHome from "@/components/home/CompaniesHome";
 
 Vue.use(VueRouter)
 
@@ -12,6 +13,7 @@ const routes = [
     { path: '/login', component: Login},
     { path: '/employee/create', component: CreateEmployee},
     { path: '/admin/dashboard', component: DashboardBuildingOwner},
+    { path: '/companies', component: CompaniesHome},
 ]
 
 // 3. Create the router instance and pass the `routes` option
