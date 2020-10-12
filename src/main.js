@@ -9,10 +9,11 @@ Vue.config.productionTip = false
 Vue.prototype.$http = axios
 
 window.axios = axios
-axios.defaults.baseURL = 'http://localhost:8080'
+axios.defaults.baseURL = 'http://localhost:8000'
 
 new Vue({
   render: h => h(App),
   router,
+  axios,
   store
 }).$mount('#app')

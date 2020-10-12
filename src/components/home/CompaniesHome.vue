@@ -31,16 +31,7 @@
     </div>
     <div class="flex flex-wrap justify-center items-center ml-20 mr-20">
 
-      <CompanyCard></CompanyCard>
-      <CompanyCard></CompanyCard>
-      <CompanyCard></CompanyCard>
-      <CompanyCard></CompanyCard>
-      <CompanyCard></CompanyCard>
-      <CompanyCard></CompanyCard>
-      <CompanyCard></CompanyCard>
-      <CompanyCard></CompanyCard>
-      <CompanyCard></CompanyCard>
-      <CompanyCard></CompanyCard>
+      <CompanyCard v-for="company in companies" :key="company.id" :company="company"></CompanyCard>
 
 
     </div>
@@ -49,13 +40,25 @@
 </template>
 
 <script>
-import CompanyCard from './CompanyCard'
+  import axios from 'axios'
+  import CompanyCard from './CompanyCard'
 
 export default {
   name: "CompaniesHome",
   components: {
     CompanyCard,
-
+  },
+  data() {
+    return {
+      companies: [],
+    }
+  },
+  created() {
+    axios.get('http://localhost:8000/companies')
+    .then(response => {
+      console.log(response.data)
+      this.companies = response.data
+    })
   }
 }
 </script>

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 
 const state = {
     user: {}
@@ -15,12 +15,19 @@ const actions = {
             console.log(response.data)
             if(response.data.token){
                 //save token
-                localStorage.setItem(
-                    "user_token",
-                    response.data.token
-                )
-                window.location.replace("/")
+                localStorage.setItem('token', response.data.token)
+                localStorage.setItem('user_id', response.data.user.id)
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
             }
+        })
+    },
+    logout(){
+        axios.post('http://localhost:8000/api/logout')
+        return new Promise((resolve) => {
+            localStorage.removeItem('token')
+            localStorage.removeItem('user_id')
+            delete axios.defaults.headers.common['Authorization']
+            resolve()
         })
     }
 };
@@ -31,6 +38,7 @@ export default {
     state,
     getters,
     actions,
-    mutations
+    mutations,
+    axios
 }
 

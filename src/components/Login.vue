@@ -1,6 +1,6 @@
 <template>
 
-    <div class="flex justify-center">
+    <div class="flex justify-center mt-10 mb-16">
         <div class="form flex flex-col justify-center">
             <div class="text-center text-5xl text-gray-700 mb-4">Log in</div>
             <div class="text-center text-gray-600 text-sm mb-10">Welcome to Prego building registration manager! <br>
@@ -31,7 +31,7 @@
                     </button>
                 </div>
             </form>
-            <footer class="flex flex-col md:flex-row text-center">
+            <footer class="flex flex-col md:flex-row text-center mx-auto">
                 <a class="inline-block align-baseline font-bold text-sm text-gray-600 hover:text-gray-800 mr-4"
                    href="#">
                     Forgot Password?
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+
     export default {
 
         name: "LogIn",
@@ -76,7 +77,13 @@
                 }
             },
             login() {
-              this.$store.dispatch('currentUser/loginUser',this.user)
+                let email = this.user.email
+                let password = this.user.password
+                this.$store.dispatch('login', { email, password })
+                    .then(() => this.$router.push('/admin/dashboard'))
+                    .catch(err => console.log(err))
+              // this.$store.dispatch('currentUser/loginUser',this.user)
+              //     .then(this.$router.push('/'))
             }
         }
     }
