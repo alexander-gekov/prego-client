@@ -4,22 +4,22 @@
 
             <div class="container px-3 mx-auto flex items-center flex-wrap flex-col md:flex-row">
                 <!--Left Col-->
-                <div class="w-1/2 md:w-2/5 justify-center items-start text-center md:text-left">
-                    <p class="uppercase tracking-loose w-full">Do you want to keep track of visitors?</p>
-                    <h1 class="my-4 text-5xl font-bold leading-tight">Prego - Visitor Management System</h1>
+                <div class="w-full md:w-2/5 lg:-mt-32 items-start text-center md:text-left">
+                    <p class="uppercase tracking-loose w-full mt-5">Do you want to keep track of visitors?</p>
+                    <h1 class="my-4 text-3xl md:text-5xl font-bold leading-tight">Prego - Visitor Management System</h1>
                     <p class="leading-normal text-2xl mb-8">No more Excel spreadsheets and paper notebooks!</p>
 <!--                    <button class="mx-auto lg:mx-0 bg-purple-500 text-white hover:bg-purple-600 font-bold rounded-full my-6 py-4 px-8 shadow-lg">Request a demo</button>-->
-                    <div class="max-w-xl mx-auto">
+                    <div class="w-10/12 md:max-w-xl mr-auto">
                         <form action="#" class="mt-2">
-                            <div class="flex items-center">
-                                <input type="email" class="w-full px-6 py-4 mr-2  bg-gray-100 shadow-inner rounded-full border border-gray-400 focus:outline-none" required placeholder="Email">
-                                <button class="bg-purple-600 hover:bg-purple-500 text-gray-200 px-5 py-2 rounded-full shadow " style="margin-left: -10.5rem;">Request Demo</button>
+                            <div class="flex flex-col lg:flex-row items-center">
+                                <input type="email" class="w-full px-6 py-4 mr-2 bg-gray-100 shadow-inner rounded-full border border-gray-400 focus:outline-none" required placeholder="Email">
+                                <button class="bg-purple-600 hover:bg-purple-500 text-gray-200 px-5 py-2 rounded-full mt-5 lg:mt-0 shadow lg:-ml-40">Request Demo</button>
                             </div>
                         </form>
                     </div>
                 </div>
                 <!--Right Col-->
-                <div class="w-1/2 md:w-3/5 text-right mt-5 mb-10">
+                <div class="w-full md:w-3/5 text-right my-8 mb-16">
                     <img class="w-full md:w-4/5 z-50 float-right" src="@/assets/img/hero.png">
                 </div>
             </div>

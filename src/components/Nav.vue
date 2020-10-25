@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto flex p-4 pb-6 justify-between">
+    <div class="md:container mx-auto flex p-4 pb-6 justify-between">
         <router-link to="/">
             <img src="@/assets/img/Preg.png" width="64" alt="">
         </router-link>
@@ -7,16 +7,13 @@
             <router-link v-if="!isLoggedIn" to="/" class="lg:mr-8">
                 <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Home</h2>
             </router-link>
-            <router-link v-if="isLoggedIn" to="/company/create" class="lg:mr-8">
-                <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Create company</h2>
-            </router-link>
             <router-link v-if="isLoggedIn" to="/employee/create" class="lg:mr-8">
                 <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Create employee</h2>
             </router-link>
             <router-link v-if="isLoggedIn" to="/admin/dashboard" class="lg:mr-8">
                 <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Dashboard</h2>
             </router-link>
-            <router-link v-if="isLoggedIn" to="/companies" class="lg:mr-8">
+            <router-link to="/companies" class="lg:mr-8">
                 <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Companies Home</h2>
             </router-link>
             <router-link v-if="!isLoggedIn" to="/login" class="lg:mr-8">

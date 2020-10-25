@@ -1,23 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import CreateCompany from "@/components/CreateCompany";
 import Login from "@/components/Login";
 import CreateEmployee from "@/components/CreateEmployee";
 import DashboardBuildingOwner from '@/components/buildingOwner/Dashboard'
 import CompaniesHome from "@/components/home/CompaniesHome";
 import LandingPage from "../components/LandingPage";
+import CompanyIndex from "../components/Company/CompanyIndex";
 import store from '../store/index'
+import FormCreator from "../components/Company/FormCreator";
 
 Vue.use(VueRouter)
 
 const routes = [
-    {
-        path: '/company/create',
-        component: CreateCompany,
-        meta: {
-            requiresAuth: true
-        }
-    },
     {
         path: '/login',
         component: Login
@@ -38,6 +32,14 @@ const routes = [
         component: CompaniesHome
     },
     {
+        path: '/company/:company_name',
+        component: CompanyIndex,
+    },
+    {
+        path: '/company/:company_name/register',
+        component: FormCreator,
+    },
+    {
         path: '/',
         component: LandingPage
     }
@@ -52,7 +54,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if(to.matched.some(record => record.meta.requiresAuth)) {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
         if (store.getters.isLoggedIn) {
             next()
             return

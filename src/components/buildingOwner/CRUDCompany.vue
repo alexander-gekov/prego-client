@@ -1,6 +1,6 @@
 <template>
     <div class="dashboard">
-
+        <vue-confirm-dialog></vue-confirm-dialog>
         <div class="min-h-screen p-4 flex justify-center items-start">
             <div class="bg-white w-full md:max-w-6xl rounded-lg shadow">
                 <div class="h-12 flex justify-between items-center border-b border-gray-200 m-4">
@@ -197,20 +197,38 @@
                     })
             },
             deleteCompany(index, id) {
-                this.companies.splice(index, 1)
-                axios.delete('/api/companies/' + id)
-                    .then(response => {
-                        console.log(response.data)
-                    })
-                    .catch(error => {
-                        console.log(error.message)
-                    })
+                this.$confirm(
+                    {
+                        message: `Are you sure?`,
+                        button: {
+                            no: 'No',
+                            yes: 'Yes'
+                        },
+                        /**
+                         * Callback Function
+                         * @param {Boolean} confirm
+                         */
+                        callback: confirm => {
+                            if (confirm) {
+                                this.companies.splice(index, 1)
+                                axios.delete('/api/companies/' + id)
+                                    .then(response => {
+                                        console.log(response.data)
+                                    })
+                                    .catch(error => {
+                                        console.log(error.message)
+                                    })
+                            }
+                        }
+                    }
+                )
             },
             openModal(){
                 this.toggleModal = !this.toggleModal;
                 this.editing = false;
                 this.form = {}
-            }
+            },
+
         }
     }
 </script>
