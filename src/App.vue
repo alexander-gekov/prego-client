@@ -1,18 +1,22 @@
 <template>
   <div id="app" class="background min-h-screen">
     <Nav/>
+    <hr>
     <router-view></router-view>
+    <Foot class="mt-16"/>
   </div>
 </template>
 
 <script>
 import Nav from './components/Nav'
+import Foot from "./components/Foot";
 
 export default {
   name: 'App',
   components: {
-    Nav
-  }
+    Nav,
+    Foot
+  },
 }
 </script>
 
