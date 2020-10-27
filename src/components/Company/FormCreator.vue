@@ -4,10 +4,11 @@
             <div class="text-center text-gray-700 text-lg my-4">
                 Form Elements:
             </div>
-            <hr>
-            <!--            <FormulateInput label="Title" class="text-center mt-4 w-1/2 mx-auto" id="Title" v-model="schema[0].children"/>-->
-            <draggable :list="elements" class="flex-column" group="elements">
-                <button v-for="element in elements" :key="element.id" @click="addField(element.type)"
+            <draggable :list="elements"
+                       :group="{ name: 'elements', pull: 'clone', put: false }"
+                       :clone="addField"
+                       class="flex-column">
+                <button v-for="(element,index) in elements" :key="index" @click="addField(element.type)"
                         class="w-full hover:bg-gray-200 text-gray-700 text-xl py-4">
                     {{element.type}}
                 </button>
@@ -15,8 +16,9 @@
         </div>
         <div class="flex-1 flex overflow-hidden">
             <div @click="selectedElement=''"
-                 class="flex flex-1 justify-center bg-white rounded-lg overflow-y-scroll py-10">
-                <div v-if="schema.length===0 || show===true" class="flex-column my-auto text-center">
+                 class="flex flex-col items-center flex-1 bg-white rounded-lg overflow-y-scroll py-10">
+                <div v-if="show===false" class="text-2xl mb-4">{{formName}}</div>
+                <div v-if="items.length===0 || show===true" class="flex-column my-auto text-center">
                     <img src="https://cdn.jotfor.ms//myforms3/img/newui/icons/emptyFormList.svg" class="mx-auto mb-4"
                          height="180">
                     <h2 class="text-3xl">You don't have a form yet.</h2>
@@ -26,14 +28,21 @@
                         Create a form
                     </button>
                 </div>
-                <draggable :list="schema" group="elements">
-                    <FormulateForm
-                            v-if="show===false"
-                            class=""
-                            v-model="values"
-                            :schema="schema"
-                    />
-                </draggable>
+                <!--                <FormulateForm-->
+                <!--                        v-if="show===false"-->
+                <!--                        class=""-->
+                <!--                        v-model="values"-->
+                <!--                        :schema="schema"-->
+                <!--                >-->
+                <FormulateForm class="" v-if="show===false" v-model="values">
+                    <draggable :list="items" group="elements">
+                        <FormulateInput
+                                v-for="item in items"
+                                :key="item.name"
+                                v-bind="item"
+                        />
+                    </draggable>
+                </FormulateForm>
             </div>
         </div>
         <div v-if="selectedElement=''" class="w-1/4 bg-gray-500 rounded-r-lg">
@@ -62,6 +71,7 @@
         data() {
             return {
                 show: true,
+                formName: 'Custom Form',
                 selectedElement: '',
                 elements: [
                     {
@@ -75,39 +85,56 @@
                     },
                 ],
                 values: {},
-                schema: [
+                items: [
                     {
-                        "component": "h3",
-                        "children": "Student registration",
-                        "class": 'text-2xl mb-10'
+                        type: 'text',
+                        name: 'name',
+                        label: 'What is your name?',
+                        placeholder: 'Your name...',
+                        validation: 'required'
                     },
                     {
-                        "label": "Your name",
-                        "name": "name",
-                        "validation": "required"
+                        type: 'text',
+                        name: 'address',
+                        label: 'What is your street address?',
+                        placeholder: 'Your address...',
+                        help: 'Where would you like your product shipped?',
+                        validation: 'required'
                     },
                     {
-                        "label": "Your email",
-                        "name": "email",
-                        "help": "Please use your student email address",
-                        "validation": "bail|required|email|ends_with:.edu",
-                        "validation-messages": {
-                            "ends_with": "Please use a .edu email address"
-                        }
+                        type: 'radio',
+                        name: 'method',
+                        label: 'What shipping method would you like?',
+                        options: [
+                            { value: 'fedex_overnight', id: 'fedex_overnight', label: 'FedEx overnight' },
+                            { value: 'fedex_ground', id: 'fedex_ground', label: 'FedEx ground' },
+                            { value: 'usps', id: 'usps', label: 'US Postal Service' }
+                        ],
+                        value: 'fedex_ground',
+                        'validation-name': 'Shipping method',
+                        validation: 'required'
                     },
+                    {
+                        name: 'submit',
+                        type: 'submit',
+                        label: 'Submit order'
+                    }
                 ]
             }
         },
         methods: {
             addField(type) {
-                if (type === 'Name') {
-                    this.schema.push({
+                console.log(type)
+                // eslint-disable-next-line no-constant-condition
+                if(true) {
+                    this.items.push({
                         "label": "Your name",
                         "name": "name",
                         "validation": "required"
                     })
-                } else if (type === 'Email') {
-                    this.schema.push({
+                }
+                else if (type === 'Email') {
+                    return this.items.push({
                         "label": "Your email",
                         "name": "email",
                         "help": "Please use your student email address",
@@ -117,7 +144,7 @@
                         }
                     })
                 } else if (type === 'Phone') {
-                    this.schema.push({
+                    return this.items.push({
                         "component": "div",
                         "class": "flex-wrapper flex",
                         "children": [
@@ -125,7 +152,7 @@
                                 "type": "select",
                                 "name": "country_code",
                                 "label": "Code",
-                                "outer-class": ["flex-item-small","mr-4"],
+                                "outer-class": ["flex-item-small", "mr-4"],
                                 "value": "1",
                                 "options": {
                                     "1": "+1",
