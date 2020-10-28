@@ -62,7 +62,7 @@
                                                 </label>
                                                 <input
                                                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                        id="owneremail" v-model="form.owner_email" required type="text"
+                                                        id="owneremail" v-model="form.owner_email" required type="email"
                                                         placeholder="Owner Email">
                                             </div>
                                             <br>

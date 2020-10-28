@@ -13,6 +13,12 @@ module.exports = {
     }
   ],
   theme: {
+    fontFamily: {
+      'body': ['Open Sans'],
+      'ptserif': ['"PT Serif"', 'serif'],
+      'lora': ['Lora', 'serif'],
+
+    },
     extend: {},
   },
   variants: {},
