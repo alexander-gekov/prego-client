@@ -156,6 +156,20 @@
                 },
                 companies: [],
                 editing: false,
+
+            //  Password generation
+              characters: [
+                {
+                  name: "Uppercase",
+                  value: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                },
+                {
+                  name: "Numbers",
+                  value: "0123456789",
+                }
+              ],
+              password: "",
+              gLength: 9,
             }
         },
         created() {
@@ -171,6 +185,10 @@
             addCompany() {
                 this.companies.push(this.form)
                 this.toggleModal = false;
+
+                // TODO -> create user account and send an email with the generated password
+                this.generatePassword();
+
                 axios.post('/api/companies', {
                     "user_id": localStorage.getItem('user_id'),
                     "company_name": this.form.company_name,
@@ -228,6 +246,20 @@
                 this.editing = false;
                 this.form = {}
             },
+          generatePassword() {
+            let result = "";
+            let charactersVal = "";
+            for (let j = 0; j < this.characters.length; j++) {
+              if (this.characters[j]) {
+                charactersVal += this.characters[j].value;
+              }
+            }
+            for (let i = 0; i < this.gLength; i++ ) {
+              result += charactersVal.charAt(Math.floor(Math.random() * charactersVal.length));
+            }
+            this.password = result;
+            console.log(result);
+          }
 
         }
     }
