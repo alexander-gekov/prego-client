@@ -13,7 +13,7 @@
     <div class="flex flex-wrap justify-end mx-56 my-5">
       <div>
         <fieldset class="border-b border-black p-0 mr-5">
-          <input class="bg-transparent p-3 m-0 w-64 active:border-0 focus:outline-none" placeholder="Enter company name or building" >
+          <input v-model="search" class="bg-transparent p-3 m-0 w-64 active:border-0 focus:outline-none" placeholder="Enter company name or building" >
           <button class="float-right mr-2 pt-3"><i class="fas fa-search"></i></button>
         </fieldset>
       </div>
@@ -35,14 +35,14 @@
 
     </div>
     <div class="flex flex-wrap justify-center items-center ml-20 mr-20">
-      <CompanyCard v-for="company in companies" :key="company.id" :company="company"></CompanyCard>
+      <CompanyCard v-for="company in filteredList" :key="company.id" :company="company"></CompanyCard>
     </div>
 
     <section class="sticky bottom-0 ">
       <div class="search-section m-20 mx-0 bg-white p-5">
         <div class="flex justify-center">
           <fieldset class="w-1/2 border-b border-black p-0">
-            <input class="bg-transparent p-3 m-0 w-3/4 active:border-0 focus:outline-none" placeholder="Enter company name or building" >
+            <input v-model="search" class="bg-transparent p-3 m-0 w-3/4 active:border-0 focus:outline-none" placeholder="Enter company name or building" >
             <button class="float-right mr-2 pt-3"><i class="fas fa-search"></i></button>
           </fieldset>
           <div class="w-1/6 search-button">
@@ -65,6 +65,7 @@ export default {
   },
   data() {
     return {
+      search: '',
       companies: [],
     }
   },
@@ -74,6 +75,14 @@ export default {
       console.log(response.data)
       this.companies = response.data
     })
+  },
+  computed: {
+    filteredList() {
+        return this.companies.filter(company => {
+          return company.company_name.toLowerCase().includes(this.search.toLowerCase())
+        })
+
+    }
   }
 }
 </script>
