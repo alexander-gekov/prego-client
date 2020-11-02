@@ -24,10 +24,10 @@
               <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
             </button>
             <ul class="dropdown-menu absolute hidden text-purple-700 pt-1">
-              <li class=""><a class="rounded-t bg-purple-100 hover:bg-purple-300 py-2 px-4 block whitespace-no-wrap " href="#">Name asc.</a></li>
-              <li class=""><a class="bg-purple-100 hover:bg-purple-300 py-2 px-4 block whitespace-no-wrap" href="#">Name desc.</a></li>
-              <li class=""><a class="bg-purple-100 hover:bg-purple-300 py-2 px-4 block whitespace-no-wrap" href="#">Building name asc.</a></li>
-              <li class=""><a class="rounded-b bg-purple-100 hover:bg-purple-300 py-2 px-4 block whitespace-no-wrap" href="#">Building name desc.</a></li>
+              <li class=""><a class="rounded-t bg-purple-100 hover:bg-purple-300 py-2 px-4 block whitespace-no-wrap " href="#" @click="sortTable('company_name', 'asc')">Name asc.</a></li>
+              <li class=""><a class="bg-purple-100 hover:bg-purple-300 py-2 px-4 block whitespace-no-wrap" href="#" @click="sortTable('company_name', 'desc')">Name desc.</a></li>
+              <li class=""><a class="bg-purple-100 hover:bg-purple-300 py-2 px-4 block whitespace-no-wrap" href="#" @click="sortTable('office_number', 'asc')">Building name asc.</a></li>
+              <li class=""><a class="rounded-b bg-purple-100 hover:bg-purple-300 py-2 px-4 block whitespace-no-wrap" href="#" @click="sortTable('office_number', 'desc')">Building name desc.</a></li>
             </ul>
           </div>
 
@@ -46,7 +46,7 @@
             <button class="float-right mr-2 pt-3"><i class="fas fa-search"></i></button>
           </fieldset>
           <div class="w-1/6 search-button">
-            <button class="ml-12 p-3 px-12 border border-black hover:bg-black hover:text-white">View all companies</button>
+            <button class="ml-12 p-3 px-12 border border-black hover:bg-black hover:text-white" @click="clearSearch()">View all companies</button>
           </div>
         </div>
       </div>
@@ -66,7 +66,21 @@ export default {
   data() {
     return {
       search: '',
+      sort: '',
       companies: [],
+    }
+  },
+  methods: {
+    sortTable(key, direction){
+      this.sort = `${key} > ${direction}`
+      if (direction === 'asc') {
+        this.companies.sort((a, b) => a[key] > b[key] ? 1: -1)
+      } else {
+        this.companies.sort((a, b) => a[key] < b[key] ? 1: -1)
+      }
+    },
+    clearSearch(){
+      this.search = '';
     }
   },
   created() {
