@@ -8,6 +8,7 @@ import LandingPage from "../components/LandingPage";
 import CompanyIndex from "../components/Company/CompanyIndex";
 import store from '../store/index'
 import FormCreator from "../components/Company/FormCreator";
+import DashboardCompanyOwner from "@/components/Company/Dashboard";
 
 Vue.use(VueRouter)
 
@@ -42,6 +43,13 @@ const routes = [
     {
         path: '/',
         component: LandingPage
+    },
+    {
+        path: '/office/dashboard',
+        component: DashboardCompanyOwner,
+        meta: {
+            requiresAuth: true
+        }
     }
 ]
 
