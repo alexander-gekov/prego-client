@@ -229,6 +229,7 @@
                         callback: confirm => {
                             if (confirm) {
                                 this.companies.splice(index, 1)
+                              // TODO -> should also delete in users
                                 axios.delete('/api/companies/' + id)
                                     .then(response => {
                                         console.log(response.data)
