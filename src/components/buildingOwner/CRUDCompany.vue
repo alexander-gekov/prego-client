@@ -155,6 +155,7 @@
                     logo_img: 'https://static-cdn.jtvnw.net/jtv_user_pictures/27fdad08-a2c2-4e0b-8983-448c39519643-profile_image-70x70.png'
                 },
                 companies: [],
+                manager_id: '',
                 editing: false,
 
             //  Password generation
@@ -183,23 +184,34 @@
         },
         methods: {
             addCompany() {
+                // eslint-disable-next-line no-unused-vars
                 this.companies.push(this.form)
                 this.toggleModal = false;
-
-                // TODO -> create user account and send an email with the generated password
-                this.generatePassword();
-
-                axios.post('/api/companies', {
-                    "user_id": localStorage.getItem('user_id'),
-                    "company_name": this.form.company_name,
-                    "office_number": this.form.office_number,
-                    "owner_name": this.form.owner_name,
-                    "owner_email": this.form.owner_email,
-                    "logo_img": "https://static-cdn.jtvnw.net/jtv_user_pictures/27fdad08-a2c2-4e0b-8983-448c39519643-profile_image-70x70.png"
+                
+                axios.post('/api/register',{
+                    "name": this.form.owner_name,
+                    "email": this.form.owner_email,
+                    "password": this.generatePassword();
+                    "role_id": "3"
+                }).then(response => {
+                    console.log("registered")
+                    this.manager_id = response.data.user.id;
+                    console.log("man id = " + this.manager_id)
+                    axios.post('/api/companies', {
+                        "building_owner_id": localStorage.getItem('user_id'),
+                        "manager_id": this.manager_id,
+                        "company_name": this.form.company_name,
+                        "building_name": 'FakeName',
+                        "office_number": this.form.office_number,
+                        "owner_name": this.form.owner_name,
+                        "logo_img": "https://static-cdn.jtvnw.net/jtv_user_pictures/27fdad08-a2c2-4e0b-8983-448c39519643-profile_image-70x70.png"
+                    })
+                        .then(response => {
+                            console.log("added company")
+                            console.log(localStorage.getItem('user_id'))
+                            console.log(response.data)
+                        });
                 })
-                    .then(response => {
-                        console.log(response.data)
-                    });
             },
             save(company) {
                 this.editing = false;
