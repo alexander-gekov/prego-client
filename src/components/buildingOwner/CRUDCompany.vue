@@ -62,7 +62,7 @@
                                                 </label>
                                                 <input
                                                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                        id="owneremail" v-model="form.owner_email" required type="text"
+                                                        id="owneremail" v-model="form.owner_email" required type="email"
                                                         placeholder="Owner Email">
                                             </div>
                                             <br>
@@ -157,6 +157,20 @@
                 companies: [],
                 manager_id: '',
                 editing: false,
+
+            //  Password generation
+              characters: [
+                {
+                  name: "Uppercase",
+                  value: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                },
+                {
+                  name: "Numbers",
+                  value: "0123456789",
+                }
+              ],
+              password: "",
+              gLength: 9,
             }
         },
         created() {
@@ -173,10 +187,11 @@
                 // eslint-disable-next-line no-unused-vars
                 this.companies.push(this.form)
                 this.toggleModal = false;
+                
                 axios.post('/api/register',{
                     "name": this.form.owner_name,
                     "email": this.form.owner_email,
-                    "password": "password", //Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+                    "password": this.generatePassword();
                     "role_id": "3"
                 }).then(response => {
                     console.log("registered")
@@ -226,6 +241,7 @@
                         callback: confirm => {
                             if (confirm) {
                                 this.companies.splice(index, 1)
+                              // TODO -> should also delete in users
                                 axios.delete('/api/companies/' + id)
                                     .then(response => {
                                         console.log(response.data)
@@ -243,6 +259,20 @@
                 this.editing = false;
                 this.form = {}
             },
+          generatePassword() {
+            let result = "";
+            let charactersVal = "";
+            for (let j = 0; j < this.characters.length; j++) {
+              if (this.characters[j]) {
+                charactersVal += this.characters[j].value;
+              }
+            }
+            for (let i = 0; i < this.gLength; i++ ) {
+              result += charactersVal.charAt(Math.floor(Math.random() * charactersVal.length));
+            }
+            this.password = result;
+            console.log(result);
+          }
 
         }
     }
