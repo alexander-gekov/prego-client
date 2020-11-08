@@ -187,11 +187,11 @@
                 // eslint-disable-next-line no-unused-vars
                 this.companies.push(this.form)
                 this.toggleModal = false;
-                
+
                 axios.post('/api/register',{
                     "name": this.form.owner_name,
                     "email": this.form.owner_email,
-                    "password": this.generatePassword();
+                    "password": this.generatePassword(),
                     "role_id": "3"
                 }).then(response => {
                     console.log("registered")
