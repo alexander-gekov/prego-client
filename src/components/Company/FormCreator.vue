@@ -1,23 +1,60 @@
 <template>
-    <div class="container mx-auto min-h-screen h-screen flex mt-10">
-        <div v-if="show===false" class="w-1/4 bg-gray-100 rounded-l-lg">
-            <div class="text-center text-gray-700 text-lg my-4">
-                Form Elements:
+    <div class="container mx-auto min-h-screen h-screen flex mt-10 text-gray-800"
+         :style="`--main-bg-color: ${accentColor};`">
+        <div v-if="show===false"
+             class="flex flex-col justify-between pb-4 w-1/4 bg-gray-100 border-2 rounded-l-lg border-r-2 overflow-y-scroll">
+            <div>
+                <div v-if="show===false"
+                     class="bg-purple-100 w-full border-t-4 border-purple-600 rounded-b text-teal-900 px-4 py-3 shadow-md mb-8"
+                     role="alert">
+                    <div class="flex">
+                        <svg class="h-6 w-6 text-purple-500 mr-4" xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 20 20">
+                            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                        </svg>
+                        <div>
+                            <p class="font-bold">You can drag and drop elements into the form.</p>
+                            <p class="text-sm">You can then edit, delete or reorder them.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center text-gray-700 text-lg my-4">
+                    Form Settings:
+                </div>
+                <FormulateInput label="Form Name" type="text" v-model="formName" class="w-4/5 mx-auto text-gray-700"/>
+                <FormulateInput
+                        type="color"
+                        v-model="accentColor"
+                        :value="accentColor"
+                        class="mx-auto w-4/5"
+                        name="sample"
+                        label="Form Accent Color"
+                        placeholder="Form Accent Color"
+                        help="Color for Button and other accents."
+                        error-behavior="live"
+                />
+                <div class="text-center text-gray-700 text-lg my-4">
+                    Form Elements:
+                </div>
+                <draggable :list="elements"
+                           :group="{ name: 'elements', pull: 'clone', put: false }"
+                           :clone="addField"
+                           class="flex flex-wrap justify-center">
+                    <button v-for="(element,index) in elements" :key="index"
+                            class="w-2/5 rounded-lg border-gray-400 border-2 shadow-lg bg-white hover:bg-gray-200 text-gray-700 text-xl py-2 m-2 focus:outline-none">
+                        {{element.type}}
+                    </button>
+                </draggable>
             </div>
-            <draggable :list="elements"
-                       :group="{ name: 'elements', pull: 'clone', put: false }"
-                       :clone="addField"
-                       class="flex-column">
-                <button v-for="(element,index) in elements" :key="index" @click="addField(element.type)"
-                        class="w-full hover:bg-gray-200 text-gray-700 text-xl py-4">
-                    {{element.type}}
-                </button>
-            </draggable>
+            <button @click="saveForm"
+                    class="w-2/5 mt-6 mx-auto px-4 py-2 bg-purple-500 rounded-lg text-white border-2 border-purple-600 hover:bg-purple-600 hover:border-purple-800">
+                Save Form
+            </button>
         </div>
         <div class="flex-1 flex overflow-hidden">
             <div @click="selectedElement=''"
-                 class="flex flex-col items-center flex-1 bg-white rounded-lg overflow-y-scroll py-10">
-                <div v-if="show===false" class="text-2xl mb-4">{{formName}}</div>
+                 class="flex flex-col items-center flex-1 bg-white rounded-lg rounded-l-none overflow-y-scroll py-8">
+                <div v-if="show===false" class="text-3xl mb-8 font-sans text-gray-800">{{formName}}</div>
                 <div v-if="items.length===0 || show===true" class="flex-column my-auto text-center">
                     <img src="https://cdn.jotfor.ms//myforms3/img/newui/icons/emptyFormList.svg" class="mx-auto mb-4"
                          height="180">
@@ -28,31 +65,124 @@
                         Create a form
                     </button>
                 </div>
-                <!--                <FormulateForm-->
-                <!--                        v-if="show===false"-->
-                <!--                        class=""-->
-                <!--                        v-model="values"-->
-                <!--                        :schema="schema"-->
-                <!--                >-->
-                <FormulateForm class="" v-if="show===false" v-model="values">
-                    <draggable :list="items" group="elements">
-                        <FormulateInput
-                                v-for="item in items"
-                                :key="item.name"
-                                v-bind="item"
-                        />
+                <FormulateForm v-if="show===false" v-model="values">
+                    <draggable
+                            class="list-group"
+                            group="elements"
+                            :list="items"
+                            v-bind="dragOptions"
+                            @start="drag = true"
+                            @end="drag = false"
+                    >
+                        <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+                            <div class="flex mb-8"
+                                 v-for="(item,index) in items"
+                                 :key="index">
+                                <FormulateInput
+                                        v-bind="item"
+                                >
+                                </FormulateInput>
+                                <div class="flex">
+                                    <button class="text-green-500 ml-5 self-start focus:outline-none"
+                                            @click="selectedEl = index">
+                                        <svg class="w-6 h-6 transform hover:-translate-y-1  hover:scale-110 transition duration-500 ease-in-out hover:text-green-600"
+                                             fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="text-red-500 ml-5 self-start focus:outline-none"
+                                            v-if="item.type != 'submit' && items.length > 2"
+                                            @click="items.splice(index,1)">
+                                        <svg class="w-6 h-6 transform hover:-translate-y-1  hover:scale-110 transition duration-500 ease-in-out hover:text-red-600"
+                                             fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </transition-group>
                     </draggable>
                 </FormulateForm>
             </div>
         </div>
-        <div v-if="selectedElement=''" class="w-1/4 bg-gray-500 rounded-r-lg">
-            <div class="text-center text-white text-lg my-4">
-                Properties:
+        <div v-if="selectedEl !== ''" class="w-1/4 bg-white rounded-r-lg overflow-y-scroll pb-6">
+            <div class="flex justify-between text-center text-lg my-4 px-4 ">
+                <div class="text-gray-700">Properties:</div>
+                <button @click="selectedEl = ''">
+                    <svg class="w-6 h-6 text-gray-600 hover:bg-gray-200 rounded-full" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
             <hr>
-            <button class="w-full hover:bg-blue-600 text-white text-xl py-4">
-                Text
-            </button>
+            <FormulateInput
+                    v-if="items[selectedEl].type === 'file'"
+                    v-model="items[selectedEl].type"
+                    :options="{file: 'File', image: 'Image'}"
+                    class="mt-4 w-4/5 mx-auto text-gray-700"
+                    type="select"
+                    placeholder="Select a type"
+                    label="Type of file"
+            />
+            <FormulateInput label="Label" type="text" v-model="items[selectedEl].label"
+                            class="mt-4 w-4/5 mx-auto text-gray-700"/>
+            <FormulateInput label="Placeholder" type="text" v-model="items[selectedEl].placeholder"
+                            class="mt-4 w-4/5 mx-auto text-gray-700"/>
+            <FormulateInput label="Help" type="text" v-model="items[selectedEl].help"
+                            class="mt-4 w-4/5 mx-auto text-gray-700"/>
+            <FormulateInput
+                    v-if="items[selectedEl].type === 'radio'"
+                    type="group"
+                    class=" w-4/5 mx-auto text-gray-700 py-4"
+                    name="options"
+                    :repeatable="true"
+                    label="Options"
+                    add-label="+ Add Option"
+            >
+                <div v-for="(option,index) in items[selectedEl].options" :key="index">
+                    <FormulateInput
+                            name="Label"
+                            :label="`Label ` + (index)"
+                            class="w-4/5"
+                            v-model="items[selectedEl].options[index].label"
+                    />
+                </div>
+            </FormulateInput>
+            <FormulateInput
+                    class="mt-4 w-4/5 mx-auto text-gray-700"
+                    v-model="items[selectedEl].validation[0]"
+                    :options="{required: 'Required',bail: 'Bail',email: 'Email', number: 'Number'}"
+                    type="checkbox"
+                    label="Validation"
+            />
+            <div class="flex justify-between px-4" v-if="items[selectedEl].type==='range'">
+                <FormulateInput
+                        type="number"
+                        name="range"
+                        class="mt-4 w-2/5 mx-auto text-gray-700"
+                        v-model="items[selectedEl].min"
+                        label="Min"
+                        placeholder="0"
+                        help=""
+                        error-behavior="live"
+                />
+                <FormulateInput
+                        type="number"
+                        name="range"
+                        class="mt-4 w-2/5 mx-auto text-gray-700"
+                        v-model="items[selectedEl].max"
+                        label="Max"
+                        placeholder="100"
+                        help=""
+                        error-behavior="live"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -61,8 +191,10 @@
     import VueFormulate from '@braid/vue-formulate'
     import draggable from 'vuedraggable'
     import Vue from 'vue'
+    import axios from 'axios'
 
     Vue.use(VueFormulate)
+
     export default {
         name: "FormCreator",
         components: {
@@ -70,9 +202,11 @@
         },
         data() {
             return {
+                company_id: '',
+                company_name: '',
                 show: true,
-                formName: 'Custom Form',
-                selectedElement: '',
+                formName: "Custom Form",
+                selectedEl: '',
                 elements: [
                     {
                         type: 'Name',
@@ -83,7 +217,24 @@
                     {
                         type: 'Phone',
                     },
+                    {
+                        type: 'File'
+                    },
+                    {
+                        type: 'Time Picker'
+                    },
+                    {
+                        type: 'Slider'
+                    },
+                    {
+                        type: 'Radio'
+                    },
+                    {
+                        type: 'Custom'
+                    }
                 ],
+                accentColor: "#3eaf7c",
+                validation: [],
                 values: {},
                 items: [
                     {
@@ -91,89 +242,137 @@
                         name: 'name',
                         label: 'What is your name?',
                         placeholder: 'Your name...',
-                        validation: 'required'
-                    },
-                    {
-                        type: 'text',
-                        name: 'address',
-                        label: 'What is your street address?',
-                        placeholder: 'Your address...',
-                        help: 'Where would you like your product shipped?',
-                        validation: 'required'
-                    },
-                    {
-                        type: 'radio',
-                        name: 'method',
-                        label: 'What shipping method would you like?',
-                        options: [
-                            { value: 'fedex_overnight', id: 'fedex_overnight', label: 'FedEx overnight' },
-                            { value: 'fedex_ground', id: 'fedex_ground', label: 'FedEx ground' },
-                            { value: 'usps', id: 'usps', label: 'US Postal Service' }
-                        ],
-                        value: 'fedex_ground',
-                        'validation-name': 'Shipping method',
-                        validation: 'required'
+                        validation: []
                     },
                     {
                         name: 'submit',
                         type: 'submit',
-                        label: 'Submit order'
+                        label: 'Submit',
                     }
-                ]
+                ],
+                drag: false
             }
+        },
+        created() {
+            axios.get('http://localhost:8000/api/companies/?name=' + this.$route.params.company_name)
+                .then(response => {
+                    this.company_id = response.data[0].id
+                    this.company_name = response.data[0].company_name
+                    console.log(this.company_name);
+                })
         },
         methods: {
             addField(type) {
-                console.log(type)
-                // eslint-disable-next-line no-constant-condition
-                if(true) {
-                    this.items.push({
+                type = JSON.parse(JSON.stringify(type))
+                if (type.type === 'Name') {
+                    return {
                         "label": "Your name",
                         "name": "name",
-                        "validation": "required"
-                    })
-                }
-                else if (type === 'Email') {
-                    return this.items.push({
+                        "validation": [["required"]]
+                    }
+                } else if (type.type === 'Email') {
+                    return {
                         "label": "Your email",
                         "name": "email",
+                        "placeholder": "Type your email",
                         "help": "Please use your student email address",
-                        "validation": "bail|required|email|ends_with:.edu",
+                        "validation": [["bail"], ["required"], ["email"], ["ends_with", ".edu"]],
                         "validation-messages": {
                             "ends_with": "Please use a .edu email address"
                         }
-                    })
-                } else if (type === 'Phone') {
-                    return this.items.push({
-                        "component": "div",
-                        "class": "flex-wrapper flex",
-                        "children": [
-                            {
-                                "type": "select",
-                                "name": "country_code",
-                                "label": "Code",
-                                "outer-class": ["flex-item-small", "mr-4"],
-                                "value": "1",
-                                "options": {
-                                    "1": "+1",
-                                    "49": "+49",
-                                    "55": "+55"
-                                }
-                            },
-                            {
-                                "type": "text",
-                                "label": "Phone number",
-                                "name": "phone",
-                                "inputmode": "numeric",
-                                "pattern": "[0-9]*",
-                                "validation": "matches:/^[0-9-]+$/",
-                                "validation-messages": {
-                                    "matches": "Phone number should only include numbers and dashes."
-                                }
-                            }
-                        ]
-                    })
+                    }
+                } else if (type.type === 'Phone') {
+                    return {
+                        "type": "tel",
+                        "name": "phone",
+                        "label": "Telephone Number",
+                        "placeholder": "+3590000001",
+                        "help": "",
+                        "validation": [["required"]],
+                    }
+                } else if (type.type === 'File') {
+                    return {
+                        "type": "file",
+                        "name": "file",
+                        "label": "Select your documents to upload",
+                        "help": "Select one or more PDFs to upload",
+                        "validation": [["mime:application/pdf"]],
+                        "multiple": true
+                    }
+                } else if (type.type === 'Time Picker') {
+                    return {
+                        "type": "time",
+                        "name": "time",
+                        "label": "Select a time",
+                        "help": "You can select a time",
+                        "validation": [],
+                    }
+                } else if (type.type === 'Slider') {
+                    return {
+                        "label": "How long do you think you’ll live?",
+                        "type": "range",
+                        "name": "range",
+                        "min": "0",
+                        "max": "100",
+                        "value": "45",
+                        "validation": [["required"], ["min:10"], ["max:90"]],
+                        "error-behavior": "live",
+                        "show-value": true
+                    }
+                } else if (type.type === 'Radio') {
+                    return {
+                        "type": 'radio',
+                        "name": 'method',
+                        "label": 'Are you healthy?',
+                        "options": [
+                            {"value": 'option1', "id": 'option1', "label": 'I am perfectly healthy.'},
+                            {"value": 'option2', "id": 'option2', "label": 'I have a cold.'},
+                            {"value": 'option3', "id": 'option3', "label": 'I have other symptoms.'}
+                        ],
+                        "value": 'option1',
+                        'validation-name': 'Health check',
+                        "validation": [['required']]
+                    }
+                } else if (type.type === 'Custom') {
+                    return {
+                        "label": "Custom Label",
+                        "name": "custom",
+                        "validation": []
+                    }
                 }
+            }
+            ,
+            saveForm() {
+                let formJson = JSON.stringify(this.items).replaceAll("\"", '\\"');
+                //formJson = formJson;
+                console.log(formJson)
+                console.log(this.items)
+                console.log(this.accentColor)
+                console.log(this.formName)
+                console.log(this.company_id)
+                // eslint-disable-next-line no-unused-vars
+                let data = {
+                    "json_form" : formJson,
+                    "accent_color": this.accentColor,
+                    "form_name": this.formName,
+                    "company_name": this.company_name
+                };
+
+                axios.post('http://localhost:8000/api/companies/Pietza/form', data)
+                    .then(response => {
+                    console.log(response.data)
+                    //this.$router.back();
+                })
+            }
+        },
+        computed: {
+            dragOptions() {
+                return {
+                    animation: 200,
+                    group: "elements",
+                    disabled: false,
+                    ghostClass: "ghost"
+                };
             }
         }
     }
@@ -181,4 +380,32 @@
 
 <style scoped>
 
+    .button {
+        margin-top: 35px;
+    }
+
+    .flip-list-move {
+        transition: transform 0.5s;
+    }
+
+    .no-move {
+        transition: transform 0s;
+    }
+
+    .ghost {
+        opacity: 0.5;
+        background: #dedede;
+    }
+
+    .list-group {
+        min-height: 20px;
+    }
+
+    .list-group-item {
+        cursor: move;
+    }
+
+    .list-group-item i {
+        cursor: pointer;
+    }
 </style>
