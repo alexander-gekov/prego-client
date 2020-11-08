@@ -2,9 +2,9 @@
   <div>
     <div class="flex justify-between">
       <div class="m-32 mt-12 w-1/3">
-        <div class="pb-4">
-          <span class="links text-purple-500 underline">victoriapark/companies </span>
-        </div>
+<!--        <div class="pb-4">-->
+<!--          <span class="links text-purple-500 underline">victoriapark/companies </span>-->
+<!--        </div>-->
         <h2> All Companies </h2>
         <div class="below-title links">
           <span>Click on a company logo to book a visit </span>

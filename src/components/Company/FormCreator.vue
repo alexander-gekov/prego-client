@@ -46,7 +46,8 @@
                     </button>
                 </draggable>
             </div>
-            <button class="w-2/5 mt-6 mx-auto px-4 py-2 bg-purple-500 rounded-lg text-white border-2 border-purple-600 hover:bg-purple-600 hover:border-purple-800">
+            <button @click="saveForm"
+                    class="w-2/5 mt-6 mx-auto px-4 py-2 bg-purple-500 rounded-lg text-white border-2 border-purple-600 hover:bg-purple-600 hover:border-purple-800">
                 Save Form
             </button>
         </div>
@@ -92,7 +93,8 @@
                                         </svg>
                                     </button>
                                     <button class="text-red-500 ml-5 self-start focus:outline-none"
-                                            v-if="item.type != 'submit' && items.length > 2" @click="items.splice(index,1)">
+                                            v-if="item.type != 'submit' && items.length > 2"
+                                            @click="items.splice(index,1)">
                                         <svg class="w-6 h-6 transform hover:-translate-y-1  hover:scale-110 transition duration-500 ease-in-out hover:text-red-600"
                                              fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -123,7 +125,7 @@
                     v-if="items[selectedEl].type === 'file'"
                     v-model="items[selectedEl].type"
                     :options="{file: 'File', image: 'Image'}"
-                     class="mt-4 w-4/5 mx-auto text-gray-700"
+                    class="mt-4 w-4/5 mx-auto text-gray-700"
                     type="select"
                     placeholder="Select a type"
                     label="Type of file"
@@ -169,16 +171,17 @@
                         placeholder="0"
                         help=""
                         error-behavior="live"
-                /><FormulateInput
-                    type="number"
-                    name="range"
-                    class="mt-4 w-2/5 mx-auto text-gray-700"
-                    v-model="items[selectedEl].max"
-                    label="Max"
-                    placeholder="100"
-                    help=""
-                    error-behavior="live"
-            />
+                />
+                <FormulateInput
+                        type="number"
+                        name="range"
+                        class="mt-4 w-2/5 mx-auto text-gray-700"
+                        v-model="items[selectedEl].max"
+                        label="Max"
+                        placeholder="100"
+                        help=""
+                        error-behavior="live"
+                />
             </div>
         </div>
     </div>
@@ -188,7 +191,7 @@
     import VueFormulate from '@braid/vue-formulate'
     import draggable from 'vuedraggable'
     import Vue from 'vue'
-
+    import axios from 'axios'
 
     Vue.use(VueFormulate)
 
@@ -199,8 +202,10 @@
         },
         data() {
             return {
+                company_id: '',
+                company_name: '',
                 show: true,
-                formName: 'Custom Form',
+                formName: "Custom Form",
                 selectedEl: '',
                 elements: [
                     {
@@ -228,7 +233,7 @@
                         type: 'Custom'
                     }
                 ],
-                accentColor: '#3eaf7c',
+                accentColor: "#3eaf7c",
                 validation: [],
                 values: {},
                 items: [
@@ -247,6 +252,14 @@
                 ],
                 drag: false
             }
+        },
+        created() {
+            axios.get('http://localhost:8000/api/companies/?name=' + this.$route.params.company_name)
+                .then(response => {
+                    this.company_id = response.data[0].id
+                    this.company_name = response.data[0].company_name
+                    console.log(this.company_name);
+                })
         },
         methods: {
             addField(type) {
@@ -270,12 +283,12 @@
                     }
                 } else if (type.type === 'Phone') {
                     return {
-                        "type":"tel",
-                        "name":"phone",
-                        "label":"Telephone Number",
-                        "placeholder":"+3590000001",
-                        "help":"",
-                        "validation":[["required"]],
+                        "type": "tel",
+                        "name": "phone",
+                        "label": "Telephone Number",
+                        "placeholder": "+3590000001",
+                        "help": "",
+                        "validation": [["required"]],
                     }
                 } else if (type.type === 'File') {
                     return {
@@ -302,7 +315,7 @@
                         "min": "0",
                         "max": "100",
                         "value": "45",
-                        "validation": [["required"],["min:10"],["max:90"]],
+                        "validation": [["required"], ["min:10"], ["max:90"]],
                         "error-behavior": "live",
                         "show-value": true
                     }
@@ -329,6 +342,28 @@
                 }
             }
             ,
+            saveForm() {
+                let formJson = JSON.stringify(this.items).replaceAll("\"", '\\"');
+                //formJson = formJson;
+                console.log(formJson)
+                console.log(this.items)
+                console.log(this.accentColor)
+                console.log(this.formName)
+                console.log(this.company_id)
+                // eslint-disable-next-line no-unused-vars
+                let data = {
+                    "json_form" : formJson,
+                    "accent_color": this.accentColor,
+                    "form_name": this.formName,
+                    "company_name": this.company_name
+                };
+
+                axios.post('http://localhost:8000/api/companies/Pietza/form', data)
+                    .then(response => {
+                    console.log(response.data)
+                    //this.$router.back();
+                })
+            }
         },
         computed: {
             dragOptions() {

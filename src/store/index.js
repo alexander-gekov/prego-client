@@ -44,6 +44,7 @@ export default new Vuex.Store({
                         localStorage.setItem('token', token)
                         localStorage.setItem('user', user)
                         localStorage.setItem('user_id', user.id)
+                        localStorage.setItem('role_id', user.role_id)
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
                         commit('auth_success', token, user)
                         resolve(resp)
@@ -54,6 +55,7 @@ export default new Vuex.Store({
                         localStorage.removeItem('token')
                         localStorage.removeItem('user')
                         localStorage.removeItem('user_id')
+                        localStorage.removeItem('role_id')
                         reject(err)
                     })
             })

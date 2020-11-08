@@ -8,6 +8,7 @@ import LandingPage from "../components/LandingPage";
 import CompanyIndex from "../components/Company/CompanyIndex";
 import store from '../store/index'
 import FormCreator from "../components/Company/FormCreator";
+import FormPage from "../components/Company/FormPage";
 
 Vue.use(VueRouter)
 
@@ -36,8 +37,13 @@ const routes = [
         component: CompanyIndex,
     },
     {
-        path: '/company/:company_name/register',
+        path: '/company/:company_name/form/settings',
         component: FormCreator,
+        requiresAuth: true
+    },
+    {
+        path: '/company/:company_name/form/',
+        component: FormPage,
     },
     {
         path: '/',

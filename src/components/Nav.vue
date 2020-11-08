@@ -7,10 +7,10 @@
             <router-link v-if="!isLoggedIn" to="/" class="lg:mr-8">
                 <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Home</h2>
             </router-link>
-            <router-link v-if="isLoggedIn" to="/employee/create" class="lg:mr-8">
+            <router-link v-if="isLoggedIn && role==='3'" to="/employee/create" class="lg:mr-8">
                 <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Create employee</h2>
             </router-link>
-            <router-link v-if="isLoggedIn" to="/admin/dashboard" class="lg:mr-8">
+            <router-link v-if="isLoggedIn && (role==='2' || role==='1')" to="/admin/dashboard" class="lg:mr-8">
                 <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Dashboard</h2>
             </router-link>
             <router-link to="/companies" class="lg:mr-8">
@@ -29,12 +29,20 @@
 </template>
 
 <script>
+    import axios from "axios";
+
+    let token = localStorage.getItem('token')
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+
     export default {
         name: "Nav",
         computed: {
             isLoggedIn: function () {
                 return this.$store.getters.isLoggedIn;
             },
+            role: () => {
+                return localStorage.getItem('role_id');
+            }
         },
         methods: {
             // logout() {

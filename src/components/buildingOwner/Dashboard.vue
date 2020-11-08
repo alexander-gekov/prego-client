@@ -6,7 +6,7 @@
       <div class="pb-4">
         <span class="links text-purple-500 underline">(owner)</span>
       </div>
-      <h2> SX TOWER </h2>
+      <h2>Building Name: {{companies[0].building_name}} </h2>
       <div class="below-title links">
         <span>Address: Rachelsmolen 14</span>
       </div>
@@ -19,6 +19,7 @@
 
 <script>
 import CRUDCompany from '@/components/buildingOwner/CRUDCompany'
+import axios from "axios";
 
 export default {
   name: 'DashboardBuildingOwner',
@@ -27,9 +28,19 @@ export default {
   },
 data(){
     return {
-      user: localStorage.getItem('user')
+      user: localStorage.getItem('user'),
+      companies: []
     }
-}
+},
+  created() {
+    axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/companies')
+            .then(response => {
+              this.companies = response.data
+            })
+            .catch(error => {
+              console.log(error.message);
+            })
+  }
 }
 </script>
 
