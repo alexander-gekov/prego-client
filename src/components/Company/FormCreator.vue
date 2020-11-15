@@ -343,14 +343,11 @@
             }
             ,
             saveForm() {
-                let formJson = JSON.stringify(this.items).replaceAll("\"", '\\"');
-                //formJson = formJson;
+                let formJson = JSON.stringify(this.items);
                 console.log(formJson)
                 console.log(this.items)
                 console.log(this.accentColor)
                 console.log(this.formName)
-                console.log(this.company_id)
-                // eslint-disable-next-line no-unused-vars
                 let data = {
                     "json_form" : formJson,
                     "accent_color": this.accentColor,
@@ -358,10 +355,10 @@
                     "company_name": this.company_name
                 };
 
-                axios.post('http://localhost:8000/api/companies/Pietza/form', data)
+                axios.post('http://localhost:8000/api/companies/' + this.company_name + '/form', data)
                     .then(response => {
                     console.log(response.data)
-                    //this.$router.back();
+                    this.$router.back();
                 })
             }
         },
