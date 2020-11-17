@@ -180,7 +180,6 @@ export default {
         .catch(error => {
           console.log(error.message);
         })
-    console.log(this.company.id)
   },
   methods: {
     addEmployee() {

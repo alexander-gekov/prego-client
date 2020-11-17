@@ -177,7 +177,7 @@ export default {
     },
   },
   created() {
-    axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/company')
+    axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/companies')
         .then(response => {
           this.companies = response.data
           console.log(this.companies)
