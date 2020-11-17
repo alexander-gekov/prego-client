@@ -7,12 +7,15 @@
             <router-link v-if="!isLoggedIn" to="/" class="lg:mr-8">
                 <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Home</h2>
             </router-link>
-            <router-link v-if="isLoggedIn && role==='3'" to="/employee/create" class="lg:mr-8">
-                <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Create employee</h2>
-            </router-link>
             <router-link v-if="isLoggedIn && (role==='2' || role==='1')" to="/admin/dashboard" class="lg:mr-8">
                 <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Dashboard</h2>
             </router-link>
+          <router-link v-if="isLoggedIn && (role==='3')" to="/office/dashboard" class="lg:mr-8">
+            <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Dashboard</h2>
+          </router-link>
+          <router-link v-if="isLoggedIn && (role==='4')" to="/employee/dashboard" class="lg:mr-8">
+            <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Dashboard</h2>
+          </router-link>
             <router-link to="/companies" class="lg:mr-8">
                 <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Companies Home</h2>
             </router-link>
@@ -52,7 +55,9 @@
             logout: function () {
                 this.$store.dispatch('logout')
                     .then(() => {
+                        this.role = "",
                         this.$router.push('/login')
+
                     })
             }
         }

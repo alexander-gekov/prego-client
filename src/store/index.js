@@ -66,6 +66,8 @@ export default new Vuex.Store({
                 localStorage.removeItem('token')
                 localStorage.removeItem('user')
                 localStorage.removeItem('user_id')
+                localStorage.removeItem('role_id')
+                localStorage.removeItem('company_id')
                 delete axios.defaults.headers.common['Authorization']
                 resolve()
             })

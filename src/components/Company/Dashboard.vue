@@ -15,11 +15,11 @@
         <div class="px-6 py-4">
           <div class="text-2xl mb-2">Company name</div>
           <p v-if="!editing" class="text-gray-700 text-xl mt-2 text-base">
-            {{ companies[0].company_name }}
+            {{ company.company_name }}
           </p>
           <input
               class="w-11/12 text-center mr-6 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              v-if="editing" v-model="companies[0].company_name" type="text">
+              v-if="editing" v-model="company.company_name" type="text">
         </div>
       </div>
       <div class="rounded overflow-hidden m-8 w-56 h-56">
@@ -27,11 +27,11 @@
         <div class="px-6 py-4">
           <div class="text-2xl mb-2">Office number</div>
           <p v-if="!editing" class="text-gray-700 text-xl mt-2 text-base">
-            {{ companies[0].office_number }}
+            {{ company.office_number }}
           </p>
           <input
               class=" w-11/12 text-center mr-6 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              v-if="editing" v-model="companies[0].office_number" type="text">
+              v-if="editing" v-model="company.office_number" type="text">
         </div>
       </div>
       <div class=" rounded overflow-hidden m-8 w-56 h-56">
@@ -39,11 +39,11 @@
         <div class="px-6 py-4">
           <div class="text-2xl mb-2">Manager name</div>
           <p v-if="!editing" class="text-gray-700 text-xl mt-2 text-base">
-            {{ companies[0].owner_name }}
+            {{ company.owner_name }}
           </p>
           <input
               class="w-11/12 text-center mr-6 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              v-if="editing" v-model="companies[0].owner_name" type="text">
+              v-if="editing" v-model="company.owner_name" type="text">
         </div>
       </div>
       <div class=" rounded overflow-hidden m-8 w-56 h-56">
@@ -55,7 +55,7 @@
           </span>
           <input
               class="w-11/12 text-center mr-6 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              v-if="editing" v-model="companies[0].office_number" type="text">
+              v-if="editing" v-model="company.office_number" type="text">
         </div>
       </div>
       <button v-if="editing" @click="editing = !editing"
@@ -124,12 +124,8 @@
       </div>
       <div class="flex-initial w-3/6 mx-5">
         <CRUDEmployee></CRUDEmployee>
-
       </div>
     </div>
-
-
-    <!--    <CRUDEmployee></CRUDEmployee>-->
   </div>
 </template>
 
@@ -147,6 +143,7 @@ export default {
       companies: [],
       editing: false,
       picture: '',
+      company: '',
 
     }
   },
@@ -161,10 +158,15 @@ export default {
       let formData = new FormData();
 
       formData.append("image", this.picture);
-      // formData.append("description", this.formFields.description);
+      formData.append("company_name", this.companies[0].company_name);
+      formData.append("office_number", this.companies[0].office_number);
+      formData.append("id", this.companies[0].id);
+
 
       axios.put('/api/companies/' + company.id, {
         "image": this.picture,
+        "company_name": this.companies[0].company_name,
+        "office_number": this.companies[0].office_number,
       })
           .then((res) => {
             console.log(res);
@@ -175,9 +177,12 @@ export default {
     },
   },
   created() {
-    axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/companies')
+    axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/company')
         .then(response => {
           this.companies = response.data
+          console.log(this.companies)
+          this.company = this.companies[0]
+          localStorage.setItem("company_id", this.company.id)
         })
         .catch(error => {
           console.log(error.message);
