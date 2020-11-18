@@ -48,12 +48,12 @@
                                             <div class="mb-4">
                                                 <label class="block text-gray-700 text-sm font-bold mb-2"
                                                        for="ownername">
-                                                    Owner name
+                                                    Manager name
                                                 </label>
                                                 <input
                                                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                                        id="ownername" v-model="form.owner_name" required type="text"
-                                                        placeholder="Owner Name">
+                                                        id="ownername" v-model="form.manager_name" required type="text"
+                                                        placeholder="Manager Name">
                                             </div>
                                             <div class="mb-4">
                                                 <label class="block text-gray-700 text-sm font-bold mb-2"
@@ -93,7 +93,7 @@
                          class="flex justify-between items-center h-16 p-4 my-6  rounded-lg border border-gray-100 shadow-md">
                         <div class="flex items-center">
                             <img class="rounded-full h-12 w-12"
-                                 src="https://static-cdn.jtvnw.net/jtv_user_pictures/27fdad08-a2c2-4e0b-8983-448c39519643-profile_image-70x70.png"
+                                 :src="company.logo_img"
                                  alt="Logo"/>
                             <div class="ml-4 flex">
                                 <div v-if="!editing" class="font-semibold text-gray-600 mr-6">{{company.company_name}}
@@ -150,7 +150,7 @@
                 form: {
                     company_name: '',
                     office_number: '',
-                    owner_name: '',
+                    manager_name: '',
                     owner_email: '',
                     logo_img: 'https://static-cdn.jtvnw.net/jtv_user_pictures/27fdad08-a2c2-4e0b-8983-448c39519643-profile_image-70x70.png'
                 },
@@ -189,7 +189,6 @@
                 this.toggleModal = false;
 
                 axios.post('/api/register',{
-                    "name": this.form.owner_name,
                     "email": this.form.owner_email,
                     "password": this.generatePassword(),
                     "role_id": "3"
@@ -201,9 +200,8 @@
                         "building_owner_id": localStorage.getItem('user_id'),
                         "manager_id": this.manager_id,
                         "company_name": this.form.company_name,
-                        "building_name": 'FakeName',
                         "office_number": this.form.office_number,
-                        "owner_name": this.form.owner_name,
+                        "manager_name": this.form.manager_name,
                         "logo_img": "https://static-cdn.jtvnw.net/jtv_user_pictures/27fdad08-a2c2-4e0b-8983-448c39519643-profile_image-70x70.png"
                     })
                         .then(response => {
@@ -272,6 +270,7 @@
             }
             this.password = result;
             console.log(result);
+            return result;
           }
 
         }

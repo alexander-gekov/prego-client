@@ -6,12 +6,12 @@
       <div class="pb-4">
         <span class="links text-purple-500 underline">(owner)</span>
       </div>
-      <h2>Building Name: {{companies[0].building_name}} </h2>
+      <h2>SX TOWER </h2>
       <div class="below-title links">
         <span>Address: Rachelsmolen 14</span>
       </div>
     </div>
-    </div>
+  </div>
 
   <CRUDCompany></CRUDCompany>
 </div>

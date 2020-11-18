@@ -93,16 +93,25 @@ export default {
     login() {
       let email = this.user.email
       let password = this.user.password
-      if(email==='' || password===''){
+      if (email === '' || password === '') {
         this.authError = 'Please fill out all fields!'
         return
       }
       this.$store.dispatch('login', {email, password})
-          .then(() => this.$router.push('/admin/dashboard'))
-          .catch(err => {
-                this.authError = 'Incorrect email or password!';
-                console.log(err)
-              })
+          .then(() => {
+            let role = localStorage.getItem("role_id")
+            if (role === "1" || role === "2") {
+              this.$router.push('/admin/dashboard')
+            } else if (role === "3") {
+              this.$router.push('/office/dashboard')
+            } else if (role === "4") {
+              this.$router.push('/employee/dashboard')
+            }
+    })
+    .catch(err => {
+      this.authError = 'Incorrect email or password!';
+      console.log(err)
+    })
 
     // this.$store.dispatch('currentUser/loginUser',this.user)
     //     .then(this.$router.push('/'))

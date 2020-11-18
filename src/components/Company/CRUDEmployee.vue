@@ -33,7 +33,7 @@
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="name" v-model="form.first_name" required
-                            type="text" placeholder="Company Name">
+                            type="text" placeholder="First name">
                       </div>
                       <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2"
@@ -43,17 +43,17 @@
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="lname" v-model="form.last_name" required
-                            type="text" placeholder="Office number">
+                            type="text" placeholder="Last name">
                       </div>
                       <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2"
                                for="email">
-                          Last name
+                          Email
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="email" v-model="form.email" required
-                            type="text" placeholder="Office number">
+                            type="text" placeholder="Email">
                       </div>
 
                       <br>
@@ -75,9 +75,11 @@
                   </div>
                 </div>
               </div>
+<!--              End modal-->
             </div>
           </div>
         </div>
+
         <div class="px-6">
           <div v-for="(employee,index) in employees" :key="employee.id"
                class="flex justify-between items-center h-16 p-4 my-6  rounded-lg border border-gray-100 shadow-md">
@@ -141,11 +143,13 @@ import axios from 'axios'
 
 export default {
   name: 'CRUDEmployee',
+
   data() {
     return {
       toggleModal: false,
       employees: [],
       editing: false,
+      employee_id: '',
 
       //  Password generation
       characters: [
@@ -168,8 +172,8 @@ export default {
 
     }
   },
-  created() {
-    axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/employees')
+  mounted() {
+    axios.get('http://localhost:8000/api/' + localStorage.getItem("company_id") + '/employees')
         .then(response => {
           this.employees = response.data
         })
@@ -182,20 +186,24 @@ export default {
       this.employees.push(this.form)
       this.toggleModal = false;
 
-      // TODO -> create user account and send an email with the generated password
-      this.generatePassword();
-
-      // TODO -> crete new user -> return the user id
-
+      axios.post('/api/register', {
+        "email": this.form.email,
+        "password": this.generatePassword(),
+        "role_id": 4
+      }).then(response => {
+      console.log("Registered")
+        this.employee_id = response.data.user_id;
+            console.log("employee id = " + this.manager_id)
       axios.post('/api/employees', {
-        "user_id": localStorage.getItem('user_id'), // TODO -> should be the id of the newly generated user
-        "company_id": localStorage.getItem('user_id'),
+        "user_id": this.employee_id,
+        "company_id": localStorage.getItem("company_id"),
         "first_name": this.form.first_name,
         "last_name": this.form.last_name,
       })
           .then(response => {
             console.log(response.data)
           });
+    })
     },
     save(employee) {
       this.editing = false;
@@ -209,7 +217,7 @@ export default {
             console.log(error.message)
           })
     },
-    deleteCompany(index, id) {
+    deleteEmployee(index, id) {
       this.$confirm(
           {
             message: `Are you sure?`,
