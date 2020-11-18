@@ -39,11 +39,11 @@
         <div class="px-6 py-4">
           <div class="text-2xl mb-2">Manager name</div>
           <p v-if="!editing" class="text-gray-700 text-xl mt-2 text-base">
-            {{ company.owner_name }}
+            {{ company.manager_name }}
           </p>
           <input
               class="w-11/12 text-center mr-6 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              v-if="editing" v-model="company.owner_name" type="text">
+              v-if="editing" v-model="company.manager_name" type="text">
         </div>
       </div>
       <div class=" rounded overflow-hidden m-8 w-56 h-56">
@@ -74,13 +74,14 @@
         <h2 class="text-center p-4">Company Details</h2>
         <div>
           <div class=" md:flex justify-center md:items-center mb-6 p-5 ">
-            <div class="profile-img ">
-              <img class="rounded-3xl"
-                   src="https://www.graphicsprings.com/filestorage/stencils/76de53de859953d24e65447798f9ccbd.png?width=500&height=500"
+
+            <div class="profile-img rounded-full ">
+              <img class="rounded-full"
+                   :src="this.image"
                    alt="ProfileImage"/>
-              <div class="file btn btn-lg btn-primary py-1">
-                Change Company Logo
-                <input type="file" name="file" class="form-control-file" id="picture" @change="onFileChange">
+              <div class="file rounded-full h-4 w-4 flex items-center justify-center shadow-xl">
+                <i class="fas fa-pencil-alt"></i>
+                <input type="file" name="file" class="form-control-file " id="picture" @change="onFileChange">
               </div>
             </div>
           </div>
@@ -142,14 +143,16 @@ export default {
       user: localStorage.getItem('user'),
       companies: [],
       editing: false,
-      picture: '',
+      pictureUpload: '',
+      image: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
       company: '',
 
     }
   },
   methods: {
     onFileChange(event) {
-      this.picture = event.target.files[0];
+      this.pictureUpload = event.target.files[0];
+      this.image = URL.createObjectURL(this.pictureUpload);
     },
     edit() {
       this.editing = !this.editing;
@@ -157,17 +160,16 @@ export default {
     save(company) {
       let formData = new FormData();
 
-      formData.append("image", this.picture);
-      formData.append("company_name", this.companies[0].company_name);
-      formData.append("office_number", this.companies[0].office_number);
+      formData.append("image", this.pictureUpload, this.pictureUpload.name);
+      formData.append("company_name", this.company.company_name);
+      formData.append("office_number", this.company.office_number);
       formData.append("id", this.companies[0].id);
 
+      for (var pair of formData.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]);
+      }
 
-      axios.put('/api/companies/' + company.id, {
-        "image": this.picture,
-        "company_name": this.companies[0].company_name,
-        "office_number": this.companies[0].office_number,
-      })
+      axios.put('/api/companies/' + company.id, formData)
           .then((res) => {
             console.log(res);
           })
@@ -177,7 +179,7 @@ export default {
     },
   },
   created() {
-    axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/companies')
+    axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/company')
         .then(response => {
           this.companies = response.data
           console.log(this.companies)
@@ -222,17 +224,15 @@ h2 {
 .profile-img img {
   width: 100%;
   height: 100%;
-  border-top-left-radius: 30%;
-  border-top-right-radius: 30%;
 }
 
 .profile-img .file {
   position: relative;
   overflow: hidden;
-  margin-top: -5%;
-  width: 100%;
+  margin-top: -15%;
+  padding: 22px;
   font-size: 15px;
-  background: lightgrey;
+  background: #efefef;
 }
 
 .profile-img .file input {
@@ -241,4 +241,5 @@ h2 {
   right: 0;
   top: 0;
 }
+
 </style>

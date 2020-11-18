@@ -187,7 +187,6 @@ export default {
       this.toggleModal = false;
 
       axios.post('/api/register', {
-        "name": this.form.first_name,
         "email": this.form.email,
         "password": this.generatePassword(),
         "role_id": 4
