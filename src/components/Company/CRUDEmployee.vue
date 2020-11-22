@@ -97,9 +97,6 @@
                 <input
                     class="w-1/2 mr-6 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     v-if="editing" v-model="employee.last_name" type="text">
-                <!--                <div v-if="!editing" class="font-light text-gray-500">{{employee.email}}</div>-->
-                <!--                <input class="w-1/2 mr-6 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"-->
-                <!--                       v-if="editing" v-model="employee.email" type="text">-->
               </div>
 
               <button v-if="editing" @click="save(employee)"
@@ -192,8 +189,8 @@ export default {
         "role_id": 4
       }).then(response => {
       console.log("Registered")
-        this.employee_id = response.data.user_id;
-            console.log("employee id = " + this.manager_id)
+        this.employee_id = response.data.user.id;
+            console.log("employee id = " + this.employee_id)
       axios.post('/api/employees', {
         "user_id": this.employee_id,
         "company_id": localStorage.getItem("company_id"),
@@ -263,6 +260,7 @@ export default {
       }
       this.password = result;
       console.log(result);
+      return result;
     }
 
   }

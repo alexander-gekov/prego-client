@@ -195,7 +195,7 @@
                 }).then(response => {
                     console.log("registered")
                     this.manager_id = response.data.user.id;
-                    console.log("man id = " + this.manager_id)
+                    console.log("manager id = " + this.manager_id)
                     axios.post('/api/companies', {
                         "building_owner_id": localStorage.getItem('user_id'),
                         "manager_id": this.manager_id,
