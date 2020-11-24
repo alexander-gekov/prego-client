@@ -160,16 +160,18 @@ export default {
     save(company) {
       let formData = new FormData();
 
-      formData.append("image", this.pictureUpload, this.pictureUpload.name);
+      formData.append("image", this.pictureUpload);
       formData.append("company_name", this.company.company_name);
       formData.append("office_number", this.company.office_number);
       formData.append("id", this.companies[0].id);
+      //shano
+      formData.append('_method', 'PUT')
 
       for (var pair of formData.entries()) {
         console.log(pair[0]+ ', ' + pair[1]);
       }
-
-      axios.put('/api/companies/' + company.id, formData)
+      let config = { headers: { 'Content-Type': 'multipart/form-data' } }
+      axios.post('/api/companies/' + company.id, formData, config)
           .then((res) => {
             console.log(res);
           })
@@ -184,6 +186,7 @@ export default {
           this.companies = response.data
           console.log(this.companies)
           this.company = this.companies[0]
+          this.image = 'http://localhost:8000/images/' + this.company.logo_img
           localStorage.setItem("company_id", this.company.id)
         })
         .catch(error => {
