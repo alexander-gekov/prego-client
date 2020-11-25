@@ -80,9 +80,10 @@
                                  :key="index">
                                 <FormulateInput
                                         v-bind="item"
+                                        v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)"
                                 >
                                 </FormulateInput>
-                                <div class="flex">
+                                <div class="flex" v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)">
                                     <button class="text-green-500 ml-5 self-start focus:outline-none"
                                             @click="selectedEl = index">
                                         <svg class="w-6 h-6 transform hover:-translate-y-1  hover:scale-110 transition duration-500 ease-in-out hover:text-green-600"
@@ -93,7 +94,7 @@
                                         </svg>
                                     </button>
                                     <button class="text-red-500 ml-5 self-start focus:outline-none"
-                                            v-if="item.type != 'submit' && items.length > 2"
+                                            v-if="(item.type != 'submit' && item.type != 'datetime-local' && item.name != 'duration' && item.name != 'isLonger') && items.length > 2"
                                             @click="items.splice(index,1)">
                                         <svg class="w-6 h-6 transform hover:-translate-y-1  hover:scale-110 transition duration-500 ease-in-out hover:text-red-600"
                                              fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -137,7 +138,7 @@
             <FormulateInput label="Help" type="text" v-model="items[selectedEl].help"
                             class="mt-4 w-4/5 mx-auto text-gray-700"/>
             <FormulateInput
-                    v-if="items[selectedEl].type === 'radio'"
+                    v-if="items[selectedEl].type === 'radio' || items[selectedEl].type === 'select'"
                     type="group"
                     class=" w-4/5 mx-auto text-gray-700 py-4"
                     name="options"
@@ -227,6 +228,12 @@
                         type: 'Slider'
                     },
                     {
+                        type: 'Select'
+                    },
+                    {
+                        type: 'Checkbox'
+                    },
+                    {
                         type: 'Radio'
                     },
                     {
@@ -243,6 +250,25 @@
                         label: 'What is your name?',
                         placeholder: 'Your name...',
                         validation: []
+                    },
+                    {
+                        type: 'datetime-local',
+                        name: 'date-start',
+                        label: 'Select a time to visit',
+                        validation: ['required']
+                    },
+                    {
+                        type: "checkbox",
+                        name: 'isLonger',
+                        label: 'My meeting will last longer than 30 min.',
+                        required: ['required']
+                    },
+                    {
+                        type: "select",
+                        name: 'duration',
+                        label: "Please select duration of your meeting",
+                        options: {'15': '15', '30': '30', '45': '45', '60': '60'},
+                        validation: ['required']
                     },
                     {
                         name: 'submit',
@@ -333,12 +359,28 @@
                         'validation-name': 'Health check',
                         "validation": [['required']]
                     }
+                } else if (type.type === 'Checkbox') {
+                    return {
+                        "type": "checkbox",
+                        "label": "My meeting will last longer than 30 min.",
+                        "name": "checkbox",
+                        "validation": []
+                    }
+                } else if (type.type === 'Select') {
+                    return {
+                        "type": "select",
+                        "options": {"first": 'First', "second": 'Second', "third": 'Third', "fourth": 'Fourth'},
+                        "label": "Select an option",
+                        "name": "select",
+                        "validation": []
+                    }
                 } else if (type.type === 'Custom') {
                     return {
                         "label": "Custom Label",
                         "name": "custom",
                         "validation": []
                     }
+
                 }
             }
             ,
@@ -349,7 +391,7 @@
                 console.log(this.accentColor)
                 console.log(this.formName)
                 let data = {
-                    "json_form" : formJson,
+                    "json_form": formJson,
                     "accent_color": this.accentColor,
                     "form_name": this.formName,
                     "company_name": this.company_name
@@ -357,9 +399,9 @@
 
                 axios.post('http://localhost:8000/api/companies/' + this.company_name + '/form', data)
                     .then(response => {
-                    console.log(response.data)
-                    this.$router.back();
-                })
+                        console.log(response.data)
+                        this.$router.back();
+                    })
             }
         },
         computed: {
