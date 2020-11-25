@@ -12,7 +12,7 @@
                         <FormulateInput
                                 v-bind="item"
                                 v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)"
-                                :input-class="['w-screen']"
+                                :input-class="['w-128']"
                         >
                         </FormulateInput>
                     </div>
@@ -63,7 +63,6 @@
             submitForm() {
                 let data = {
                     "company_id": this.company_id,
-                    "visitor_id": localStorage.getItem('user_id'),
                     "answers": this.values
                 }
                 axios.post(`http://localhost:8000/api/companies/${this.$route.params.company_name}/form/answers`, data)

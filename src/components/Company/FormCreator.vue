@@ -94,7 +94,14 @@
                                         </svg>
                                     </button>
                                     <button class="text-red-500 ml-5 self-start focus:outline-none"
-                                            v-if="(item.type != 'submit' && item.type != 'datetime-local' && item.name != 'duration' && item.name != 'isLonger') && items.length > 2"
+                                            v-if="(item.type != 'submit' &&
+                                            item.type != 'datetime-local' &&
+                                            item.name != 'duration' &&
+                                            item.name != 'isLonger') &&
+                                            item.name != 'firstname' &&
+                                            item.name != 'lastname' &&
+                                            item.name != 'email' &&
+                                            items.length > 2"
                                             @click="items.splice(index,1)">
                                         <svg class="w-6 h-6 transform hover:-translate-y-1  hover:scale-110 transition duration-500 ease-in-out hover:text-red-600"
                                              fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -246,10 +253,24 @@
                 items: [
                     {
                         type: 'text',
-                        name: 'name',
-                        label: 'What is your name?',
-                        placeholder: 'Your name...',
-                        validation: []
+                        name: 'firstname',
+                        label: 'What is your first name?',
+                        placeholder: 'Your first name...',
+                        validation: ['required']
+                    },
+                    {
+                        type: 'text',
+                        name: 'lastname',
+                        label: 'What is your last name?',
+                        placeholder: 'Your last name...',
+                        validation: ['required']
+                    },
+                    {
+                        type: 'email',
+                        name: 'email',
+                        label: 'What is your email?',
+                        placeholder: 'Your email...',
+                        validation: ['required']
                     },
                     {
                         type: 'datetime-local',
