@@ -3,17 +3,19 @@
          :style="`--main-bg-color: ${accentColor};`">
         <div class="flex-1 flex overflow-hidden">
             <div @click="selectedElement=''"
-                 class="flex flex-col items-center flex-1 bg-white rounded-lg rounded-l-none overflow-y-scroll py-8">
+                 class="flex flex-col flex-1 items-center bg-white rounded-lg rounded-l-none border-gray-400 border-4 overflow-y-scroll overflow-x-hidden py-8">
                 <div class="text-3xl mb-8 font-sans text-gray-800">{{formName}}</div>
-                <FormulateForm v-model="values">
-                            <div class="flex mb-8"
-                                 v-for="(item,index) in items"
-                                 :key="index">
-                                <FormulateInput
-                                        v-bind="item"
-                                >
-                                </FormulateInput>
-                            </div>
+                <FormulateForm @submit="submitForm" v-model="values">
+                    <div class="mb-8"
+                         v-for="(item,index) in items"
+                         :key="index">
+                        <FormulateInput
+                                v-bind="item"
+                                v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)"
+                                :input-class="['w-128']"
+                        >
+                        </FormulateInput>
+                    </div>
                 </FormulateForm>
             </div>
         </div>
@@ -30,8 +32,7 @@
 
     export default {
         name: "FormCreator",
-        components: {
-        },
+        components: {},
         created() {
             axios.get('http://localhost:8000/api/companies/?name=' + this.$route.params.company_name)
                 .then(response => {
@@ -42,7 +43,6 @@
                             this.items = JSON.parse(response.data[0].json_form);
                             this.accentColor = response.data[0].accent_color;
                             this.formName = response.data[0].form_name;
-                            console.log(response.data[0])
                         })
                 })
 
@@ -60,7 +60,18 @@
             }
         },
         methods: {
-
+            submitForm() {
+                let data = {
+                    "company_id": this.company_id,
+                    "answers": this.values
+                }
+                axios.post(`http://localhost:8000/api/companies/${this.$route.params.company_name}/form/answers`, data)
+                    .then(r => {
+                        console.log(r.data);
+                        this.$router.back();
+                    })
+                    .catch()
+            }
         },
     }
 </script>

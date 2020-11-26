@@ -15,11 +15,11 @@
         <div class="px-6 py-4">
           <div class="text-2xl mb-2">Company name</div>
           <p v-if="!editing" class="text-gray-700 text-xl mt-2 text-base">
-            {{ companies[0].company_name }}
+            {{ company.company_name }}
           </p>
           <input
               class="w-11/12 text-center mr-6 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              v-if="editing" v-model="companies[0].company_name" type="text">
+              v-if="editing" v-model="company.company_name" type="text">
         </div>
       </div>
       <div class="rounded overflow-hidden m-8 w-56 h-56">
@@ -27,11 +27,11 @@
         <div class="px-6 py-4">
           <div class="text-2xl mb-2">Office number</div>
           <p v-if="!editing" class="text-gray-700 text-xl mt-2 text-base">
-            {{ companies[0].office_number }}
+            {{ company.office_number }}
           </p>
           <input
               class=" w-11/12 text-center mr-6 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              v-if="editing" v-model="companies[0].office_number" type="text">
+              v-if="editing" v-model="company.office_number" type="text">
         </div>
       </div>
       <div class=" rounded overflow-hidden m-8 w-56 h-56">
@@ -39,11 +39,11 @@
         <div class="px-6 py-4">
           <div class="text-2xl mb-2">Manager name</div>
           <p v-if="!editing" class="text-gray-700 text-xl mt-2 text-base">
-            {{ companies[0].owner_name }}
+            {{ company.manager_name }}
           </p>
           <input
               class="w-11/12 text-center mr-6 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              v-if="editing" v-model="companies[0].owner_name" type="text">
+              v-if="editing" v-model="company.manager_name" type="text">
         </div>
       </div>
       <div class=" rounded overflow-hidden m-8 w-56 h-56">
@@ -55,7 +55,7 @@
           </span>
           <input
               class="w-11/12 text-center mr-6 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              v-if="editing" v-model="companies[0].office_number" type="text">
+              v-if="editing" v-model="company.office_number" type="text">
         </div>
       </div>
       <button v-if="editing" @click="editing = !editing"
@@ -74,13 +74,14 @@
         <h2 class="text-center p-4">Company Details</h2>
         <div>
           <div class=" md:flex justify-center md:items-center mb-6 p-5 ">
-            <div class="profile-img ">
-              <img class="rounded-3xl"
-                   src="https://www.graphicsprings.com/filestorage/stencils/76de53de859953d24e65447798f9ccbd.png?width=500&height=500"
+
+            <div class="profile-img rounded-full ">
+              <img class="rounded-full"
+                   :src="this.image"
                    alt="ProfileImage"/>
-              <div class="file btn btn-lg btn-primary py-1">
-                Change Company Logo
-                <input type="file" name="file" class="form-control-file" id="picture" @change="onFileChange">
+              <div class="file rounded-full h-4 w-4 flex items-center justify-center shadow-xl">
+                <i class="fas fa-pencil-alt"></i>
+                <input type="file" name="file" class="form-control-file " id="picture" @change="onFileChange">
               </div>
             </div>
           </div>
@@ -124,12 +125,8 @@
       </div>
       <div class="flex-initial w-3/6 mx-5">
         <CRUDEmployee></CRUDEmployee>
-
       </div>
     </div>
-
-
-    <!--    <CRUDEmployee></CRUDEmployee>-->
   </div>
 </template>
 
@@ -146,13 +143,16 @@ export default {
       user: localStorage.getItem('user'),
       companies: [],
       editing: false,
-      picture: '',
+      pictureUpload: '',
+      image: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
+      company: '',
 
     }
   },
   methods: {
     onFileChange(event) {
-      this.picture = event.target.files[0];
+      this.pictureUpload = event.target.files[0];
+      this.image = URL.createObjectURL(this.pictureUpload);
     },
     edit() {
       this.editing = !this.editing;
@@ -160,12 +160,16 @@ export default {
     save(company) {
       let formData = new FormData();
 
-      formData.append("image", this.picture);
-      // formData.append("description", this.formFields.description);
+      formData.append("image", this.pictureUpload, this.pictureUpload.name);
+      formData.append("company_name", this.company.company_name);
+      formData.append("office_number", this.company.office_number);
+      formData.append("id", this.companies[0].id);
 
-      axios.put('/api/companies/' + company.id, {
-        "image": this.picture,
-      })
+      for (var pair of formData.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]);
+      }
+
+      axios.put('/api/companies/' + company.id, formData)
           .then((res) => {
             console.log(res);
           })
@@ -175,9 +179,12 @@ export default {
     },
   },
   created() {
-    axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/companies')
+    axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/company')
         .then(response => {
           this.companies = response.data
+          console.log(this.companies)
+          this.company = this.companies[0]
+          localStorage.setItem("company_id", this.company.id)
         })
         .catch(error => {
           console.log(error.message);
@@ -217,17 +224,15 @@ h2 {
 .profile-img img {
   width: 100%;
   height: 100%;
-  border-top-left-radius: 30%;
-  border-top-right-radius: 30%;
 }
 
 .profile-img .file {
   position: relative;
   overflow: hidden;
-  margin-top: -5%;
-  width: 100%;
+  margin-top: -15%;
+  padding: 22px;
   font-size: 15px;
-  background: lightgrey;
+  background: #efefef;
 }
 
 .profile-img .file input {
@@ -236,4 +241,5 @@ h2 {
   right: 0;
   top: 0;
 }
+
 </style>

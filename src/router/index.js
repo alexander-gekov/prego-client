@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from "@/components/Login";
-import CreateEmployee from "@/components/CreateEmployee";
 import DashboardBuildingOwner from '@/components/buildingOwner/Dashboard'
 import CompaniesHome from "@/components/home/CompaniesHome";
 import LandingPage from "../components/LandingPage";
@@ -10,6 +9,7 @@ import store from '../store/index'
 import FormCreator from "../components/Company/FormCreator";
 import DashboardCompanyOwner from "@/components/Company/Dashboard";
 import FormPage from "../components/Company/FormPage";
+import EmployeeDashboard from "@/components/employee/Dashboard"
 
 Vue.use(VueRouter)
 
@@ -17,10 +17,6 @@ const routes = [
     {
         path: '/login',
         component: Login
-    },
-    {
-        path: '/employee/create',
-        component: CreateEmployee
     },
     {
         path: '/admin/dashboard',
@@ -56,6 +52,13 @@ const routes = [
         meta: {
             requiresAuth: true
         }
+    },
+    {
+        path: '/employee/dashboard',
+        component: EmployeeDashboard,
+        meta: {
+            requiresAuth: true
+        }
     }
 ]
 
@@ -63,7 +66,7 @@ const routes = [
 // You can pass in additional options here, but let's
 // keep it simple for now.
 const router = new VueRouter({
-    mode: 'history',
+    // mode: 'history',
     routes // short for `routes: routes`
 })
 

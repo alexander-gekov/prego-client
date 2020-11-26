@@ -19,7 +19,12 @@ module.exports = {
       'lora': ['Lora', 'serif'],
 
     },
-    extend: {},
+    extend: {
+      spacing: {
+        '96': '24 rem',
+        '128': '32rem'
+      }
+    },
   },
   variants: {},
   plugins: [
