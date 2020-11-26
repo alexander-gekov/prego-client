@@ -17,7 +17,7 @@
                     repellendus sint.
                 </div>
                 <div class="flex mt-10">
-                    <router-link :to="'/company/' + company_name + '/form'" class="bg-blue-500 px-10 py-3 rounded-full shadow-lg hover:bg-blue-600 text-white mr-8 focus:outline-none">
+                    <router-link :to="'/company/' + id + '/form'" class="bg-blue-500 px-10 py-3 rounded-full shadow-lg hover:bg-blue-600 text-white mr-8 focus:outline-none">
                         <span class="text-xl">Pre-register</span></router-link>
                     <button class="bg-white px-10 py-3 border border-blue-500 rounded-full shadow-lg hover:bg-gray-200 text-blue-500 focus:outline-none mr-8">
                         <span class="text-xl">Email</span></button>
@@ -72,6 +72,7 @@
             axios.get('http://localhost:8000/api/companies/?name=' + this.$route.params.company_name)
             .then(response => {
                 console.log(response.data)
+                this.id = response.data[0].id
                 this.company_name = response.data[0].company_name
                 this.manager_id = response.data[0].manager_id;
                 this.company_logo = response.data[0].logo_img
@@ -79,6 +80,7 @@
         },
         data() {
             return {
+                id: '',
                 manager_id: '',
                 company_name: '',
                 company_logo: '',

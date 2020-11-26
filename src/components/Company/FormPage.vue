@@ -26,6 +26,7 @@
     import VueFormulate from '@braid/vue-formulate'
     import Vue from 'vue'
     import axios from 'axios'
+    import moment from 'moment'
 
 
     Vue.use(VueFormulate)
@@ -34,38 +35,39 @@
         name: "FormCreator",
         components: {},
         created() {
-            axios.get('http://localhost:8000/api/companies/?name=' + this.$route.params.company_name)
+            axios.get('/api/companies/' + this.$route.params.id + '/form')
                 .then(response => {
-                    console.log(response.data)
-                    this.company_id = response.data[0].id
-                    axios.get('/api/companies/' + response.data[0].id + '/form')
-                        .then(response => {
-                            this.items = JSON.parse(response.data[0].json_form);
-                            this.accentColor = response.data[0].accent_color;
-                            this.formName = response.data[0].form_name;
-                        })
+                    this.items = JSON.parse(response.data[0].json_form);
+                    this.accentColor = response.data[0].accent_color;
+                    this.formName = response.data[0].form_name;
+                    this.employees = response.data[0].company.employees;
                 })
-
         },
         data() {
             return {
                 show: true,
-                company_id: '',
-                formName: '',
-                accentColor: '',
-                validation: [],
+                // company_id: '',
                 values: {},
+                accentColor: '',
+                formName: '',
                 items: [],
+                employees: [],
+                validation: [],
                 drag: false
             }
         },
         methods: {
             submitForm() {
+
+                this.values["date-start"] = new moment(this.values["date-start"])
+                this.values["date-end"] = new moment(this.values["date-start"]).add(this.values["duration"], 'minutes')
+
                 let data = {
-                    "company_id": this.company_id,
-                    "answers": this.values
+                    "employee_id" : this.employees[Math.floor(Math.random() * this.employees.length)].id, // TODO , Random employee right now
+                    "answers" : JSON.stringify(this.values)
                 }
-                axios.post(`http://localhost:8000/api/companies/${this.$route.params.company_name}/form/answers`, data)
+
+                axios.post(`http://localhost:8000/api/appointments`, data)
                     .then(r => {
                         console.log(r.data);
                         this.$router.back();

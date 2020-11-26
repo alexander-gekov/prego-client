@@ -39,7 +39,7 @@ const routes = [
         requiresAuth: true
     },
     {
-        path: '/company/:company_name/form/',
+        path: '/company/:id/form/',
         component: FormPage,
     },
     {
