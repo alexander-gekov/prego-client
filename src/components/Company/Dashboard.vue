@@ -46,19 +46,7 @@
               v-if="editing" v-model="company.manager_name" type="text">
         </div>
       </div>
-      <div class=" rounded overflow-hidden m-8 w-56 h-56">
-        <div class="flex justify-center"><i class="fas fa-envelope-open-text text-6xl"></i></div>
-        <div class="px-6 py-4">
-          <div class="text-2xl mb-2">Email</div>
-          <span v-if="!editing" class="text-gray-700 text-xl mt-2 text-base">
-            user email
-          </span>
-          <input
-              class="w-11/12 text-center mr-6 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              v-if="editing" v-model="company.office_number" type="text">
-        </div>
-      </div>
-      <button v-if="editing" @click="editing = !editing"
+      <button v-if="editing" @click="save(company)"
               class=" bg-purple-500 hover:bg-purple-700 p-4 m-4 rounded-full shadow-md flex justify-center items-center focus:outline-none">
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
              width="24" height="24"
@@ -75,8 +63,8 @@
         <div>
           <div class=" md:flex justify-center md:items-center mb-6 p-5 ">
 
-            <div class="profile-img rounded-full ">
-              <img class="rounded-full"
+            <div class="profile-img rounded-3xl w-40 h-40">
+              <img class="rounded-3xl object-cover"
                    :src="this.image"
                    alt="ProfileImage"/>
               <div class="file rounded-full h-4 w-4 flex items-center justify-center shadow-xl">
@@ -85,35 +73,41 @@
               </div>
             </div>
           </div>
-          <div class="md:flex md:items-center mb-6 p-5">
+          <div class="md:flex md:items-center mb-6 p-5" @dblclick="editMore()">
             <div class="md:w-1/3">
               <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
                 Description
               </label>
             </div>
             <div class="md:w-2/3">
-              <textarea
+              <p v-if="!additionalEditing" class="text-gray-700 text-xl mt-2 text-base">
+                {{ company.description }}
+              </p>
+              <textarea v-if="additionalEditing"
                   class="appearance-none bg-transparent border-b border-black w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none border-b border-black"
-                  name="Text1" cols="40" rows="3"></textarea>
+                  v-model="company.description" cols="40" rows="3"></textarea>
             </div>
           </div>
-          <div class="md:flex md:items-center mb-6 p-5">
+          <div class="md:flex md:items-center mb-6 p-5" @dblclick="editMore()">
             <div class="md:w-1/3">
               <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
                 Company history
               </label>
             </div>
             <div class="md:w-2/3">
-              <textarea
+              <p v-if="!additionalEditing" class="text-gray-700 text-xl mt-2 text-base">
+                {{ company.history }}
+              </p>
+              <textarea v-if="additionalEditing"
                   class="appearance-none bg-transparent border-b border-black w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none border-b border-black"
-                  name="Text1" cols="40" rows="3"></textarea>
+                  v-model="company.history" cols="40" rows="3"></textarea>
             </div>
           </div>
 
           <div class="md:flex md:items-center">
             <div class="md:w-1/3"></div>
             <div class="md:w-2/3 mb-4">
-              <button @click="save(companies[0])"
+              <button @click="save(company)"
                       class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-5 rounded"
                       type="button">
                 Edit
@@ -140,13 +134,12 @@ export default {
   components: {CRUDEmployee},
   data() {
     return {
-      user: localStorage.getItem('user'),
       companies: [],
       editing: false,
+      additionalEditing: false,
       pictureUpload: '',
       image: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
       company: '',
-
     }
   },
   methods: {
@@ -157,14 +150,20 @@ export default {
     edit() {
       this.editing = !this.editing;
     },
+    editMore() {
+      this.additionalEditing = !this.additionalEditing;
+    },
     save(company) {
       let formData = new FormData();
 
       formData.append("image", this.pictureUpload);
       formData.append("company_name", this.company.company_name);
       formData.append("office_number", this.company.office_number);
-      formData.append("id", this.companies[0].id);
-      //shano
+      formData.append("description", this.company.description);
+      formData.append("history", this.company.history);
+
+      formData.append("id", this.company.id);
+
       formData.append('_method', 'PUT')
 
       for (var pair of formData.entries()) {
@@ -172,8 +171,9 @@ export default {
       }
       let config = { headers: { 'Content-Type': 'multipart/form-data' } }
       axios.post('/api/companies/' + company.id, formData, config)
-          .then((res) => {
-            console.log(res);
+          .then(() => {
+            this.editing = false;
+            this.additionalEditing = false;
           })
           .catch((error) => {
             console.log(error);

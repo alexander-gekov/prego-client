@@ -3,8 +3,8 @@
   <div class="square w-1/4 border-r border-b border-gray-400 text-center max-w-sm bg-gray-200">
     <div class="content mb-2">
       <div class="pb-2 flex justify-center items-center">
-        <img :src="company.logo_img"
-             class="image w-3/5 " alt="Company logo">
+        <img :src="getImage(company.logo_img)"
+             class="image w-48 h-48 object-cover" alt="Company logo">
       </div>
       <div class="flex flex-wrap w-full">
 
@@ -33,6 +33,15 @@ export default {
   props: {
     company: Object
   },
+  methods: {
+    getImage(image){
+      if((/\.(gif|jpg|jpeg|tiff|png)$/i).test(image)){
+        return image = 'http://localhost:8000/images/' + image
+      }else {
+        return image
+      }
+    }
+  }
 }
 </script>
 
