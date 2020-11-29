@@ -415,10 +415,10 @@
                     "json_form": formJson,
                     "accent_color": this.accentColor,
                     "form_name": this.formName,
-                    "company_name": this.company_name
+                    "company_id": this.company_id
                 };
 
-                axios.post('http://localhost:8000/api/companies/' + this.company_name + '/form', data)
+                axios.post('http://localhost:8000/api/companies/' + this.company_id + '/form', data)
                     .then(response => {
                         console.log(response.data)
                         this.$router.back();
