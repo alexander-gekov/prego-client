@@ -2,14 +2,14 @@
 <div>
   <div class="flex justify-between">
     <div class="m-12 ml-48 w-1/3">
-      <h2>Welcome, employee_name! </h2>
+      <h2>Welcome, {{employee.first_name}} {{employee.last_name}} </h2>
       <div class="below-title links">
         <span>Review your daily schedule </span>
       </div>
     </div>
   </div>
-  <div class="container ml-5">
-    <FullCalendar :options="calendarOptions"
+  <div class="container ml-56 bg-gray-100 p-8 shadow-2xl">
+    <FullCalendar id="calendar"  :options="calendarOptions"
     >
       <template #eventContent="{ timeText, event }">
         <b>{{ timeText }}</b>
@@ -27,20 +27,20 @@
         <table class="text-lg ">
           <tbody>
           <tr>
-            <td>Date: </td>
-            <td>16-12-2020</td>
+            <td>Start: </td>
+            <td>{{ selectedAppointment.startStr }}</td>
           </tr>
           <tr>
-            <td>Time: </td>
-            <td>11am - 12 pm</td>
+            <td>End: </td>
+            <td>{{ selectedAppointment.endStr }}</td>
           </tr>
           <tr>
             <td>Visitor name: </td>
-            <td>Adam Sandler</td>
+            <td>{{ selectedAppointment.title }}</td>
           </tr>
           <tr>
-            <td>Reason for visit: </td>
-            <td>Discussing a business offer</td>
+            <td>Reason for visit/ Email: </td>
+            <td>{{ selectedAppointment.extendedProps.email }}</td>
           </tr>
           </tbody>
         </table>
@@ -49,13 +49,13 @@
 
           <div class="flex items-center ">
             <button
-                class="bg-orange-400 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-32 rounded focus:outline-none focus:shadow-outline left"
+                class="bg-orange-400 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-40 rounded focus:outline-none focus:shadow-outline left"
                 @click="toggleModal = false" type="button">
               Close
             </button>
             <button
                 @click="addEmployee()"
-                class="bg-purple-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline right"
+                class="bg-purple-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 ml-40 rounded focus:outline-none focus:shadow-outline right"
                 type="button">
               Send email
             </button>
@@ -69,13 +69,11 @@
       </div>
     </div>
   </div>
-  <!--              End modal-->
+  <!--     End modal      -->
 </div>
 </template>
 
 <script>
-
-// require('@fullcalendar/core/main.min.css')
 require('@fullcalendar/daygrid/main.min.css')
 require('@fullcalendar/timegrid/main.min.css')
 
@@ -84,18 +82,22 @@ import DayGridPlugin from '@fullcalendar/daygrid'
 import TimeGridPlugin from '@fullcalendar/timegrid'
 import InteractionPlugin from '@fullcalendar/interaction'
 import ListPlugin from '@fullcalendar/list'
+import axios from 'axios'
+
+
 
 export default {
+
   name: 'EmployeeDashboard',
   components: {
     FullCalendar,
   },
   data() {
     return {
-      appointments: [
-        { title: 'event 4', date: '2020-11-10' },
-        { title: 'event 5', date: '2020-11-11' }
-      ],
+      employee: '',
+      appointments: [],
+      renderedAppointments: [],
+      selectedAppointment: '',
       toggleModal: false,
       calendarOptions: {
         plugins: [
@@ -114,15 +116,7 @@ export default {
         editable: true,
         selectMirror: true,
         dayMaxEvents: true,
-        initialEvents: this.appointments,
-        events: [
-          { title: 'event 1', date: '2020-11-11' },
-          { title: 'event 2', date: '2020-11-02' },
-          {
-            title: 'Lunch',
-            start: new Date().toISOString().replace(/T.*$/, '') + 'T12:00:00'
-          },
-        ],
+        events: '',
         eventSet:this.handleEvents,
         select: this.handleDateSelect,
         // dateClick: this.handleDateClick,
@@ -157,17 +151,63 @@ export default {
       }
     },
     handleEvents(events) {
-      this.appointments = events
+      this.renderedAppointments = events
     },
-    handleEventClick() {
+    handleEventClick(clickInfo) {
+      // if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+      //   // clickInfo.event.remove()
+      // }
       this.toggleModal = !this.toggleModal;
+      this.selectedAppointment = clickInfo.event;
+      console.log(clickInfo.event)
     },
     deleteAppointment(id){
         if (confirm(`Are you sure you want to delete the appointment`)) {
           // clickInfo.event.remove()
           console.log(id)
         }
+    },
+    renderAppointments(){
+      let rendAppointments = []
+      this.appointments.forEach(appointment => {
+         let content = JSON.parse(appointment.form_answers);
+        let obj = {
+          title: " " + content.firstname +' ' + content.lastname,
+          start: appointment.date_start,
+          end: appointment.date_end,
+          visitor: appointment.first_name +' ' + appointment.last_name,
+          phone: appointment.phone_number,
+          email: appointment.email,
+          id: appointment.id
+        }
+        rendAppointments.push(obj)
+      })
+      this.renderedAppointments = rendAppointments
+      console.log('Rendered ' + this.renderedAppointments)
+    },
+    getAppointments(){
+      return this.renderedAppointments;
     }
+  },
+  created() {
+    let id = ''
+    axios.get('/api/employee/' + localStorage.getItem('user_id'))
+        .then(res => {
+          this.employee = res.data[0]
+          id = this.employee.id
+          console.log(this.employee.id)
+
+
+    axios.get('/api/employees/' + id + '/appointments')
+        .then(response => {
+          console.log(response.data)
+          this.appointments = response.data
+          this.renderAppointments()
+          this.calendarOptions.events = this.getAppointments()
+        }).catch(error => {
+      console.log(error.message)
+    })
+    })
   }
 }
 </script>
