@@ -77,13 +77,15 @@
                         <transition-group type="transition" :name="!drag ? 'flip-list' : null">
                             <div class="flex mb-8"
                                  v-for="(item,index) in items"
-                                 :key="index">
+                                 :key="item.name">
                                 <FormulateInput
                                         v-bind="item"
+                                        :options="item.name === 'employee' ? employeesArray : item.options"
                                         v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)"
                                 >
                                 </FormulateInput>
-                                <div class="flex" v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)">
+                                <div class="flex"
+                                     v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)">
                                     <button class="text-green-500 ml-5 self-start focus:outline-none"
                                             @click="selectedEl = index">
                                         <svg class="w-6 h-6 transform hover:-translate-y-1  hover:scale-110 transition duration-500 ease-in-out hover:text-green-600"
@@ -292,12 +294,21 @@
                         validation: ['required']
                     },
                     {
+                        type: "select",
+                        name: 'employee',
+                        label: "Who are you visiting",
+                        options: this.employeesArray,
+                        validation: ['required']
+                    },
+                    {
                         name: 'submit',
                         type: 'submit',
                         label: 'Submit',
                     }
                 ],
-                drag: false
+                drag: false,
+                employees: [],
+                employeesArray: [],
             }
         },
         created() {
@@ -305,8 +316,20 @@
                 .then(response => {
                     this.company_id = response.data[0].id
                     this.company_name = response.data[0].company_name
-                    console.log(this.company_name);
+                    axios.get('http://localhost:8000/api/employees/?company_id=' + this.company_id)
+                        .then(resp => {
+                            this.employees = resp.data;
+                            this.employees.forEach(emp => {
+                                this.employeesArray.push({
+                                    label: emp.label,
+                                    value: emp.value
+                                })
+                            })
+                            console.log(JSON.stringify(this.employeesArray));
+                        })
                 })
+
+
         },
         methods: {
             addField(type) {

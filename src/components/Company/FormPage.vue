@@ -11,6 +11,7 @@
                          :key="index">
                         <FormulateInput
                                 v-bind="item"
+                                :options="item.name === 'employee' ? employeesArray : item.options"
                                 v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)"
                                 :input-class="['w-128']"
                         >
@@ -41,6 +42,12 @@
                     this.accentColor = response.data[0].accent_color;
                     this.formName = response.data[0].form_name;
                     this.employees = response.data[0].company.employees;
+                    this.employees.forEach(emp => {
+                        this.employeesArray.push({
+                            label: emp.first_name,
+                            value: emp.id
+                        })
+                    })
                 })
         },
         data() {
@@ -52,6 +59,7 @@
                 formName: '',
                 items: [],
                 employees: [],
+                employeesArray: [],
                 validation: [],
                 drag: false
             }
@@ -63,10 +71,10 @@
                 this.values["date-end"] = new moment(this.values["date-start"]).add(this.values["duration"], 'minutes')
 
                 let data = {
-                    "employee_id" : this.employees[Math.floor(Math.random() * this.employees.length)].id, // TODO , Random employee right now
+                    "employee_id" : this.values["employee"].value,
                     "answers" : JSON.stringify(this.values)
                 }
-
+                console.log(data);
                 axios.post(`http://localhost:8000/api/appointments`, data)
                     .then(r => {
                         console.log(r.data);
