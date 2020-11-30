@@ -63,7 +63,7 @@
         <div>
           <div class=" md:flex justify-center md:items-center mb-6 p-5 ">
 
-            <div class="profile-img rounded-3xl w-40 h-40">
+            <div class="profile-img rounded-3xl w-48 h-48">
               <img class="rounded-3xl object-cover"
                    :src="this.image"
                    alt="ProfileImage"/>
@@ -79,7 +79,7 @@
                 Description
               </label>
             </div>
-            <div class="md:w-2/3">
+            <div class="md:w-2/3 overflow-auto h-48">
               <p v-if="!additionalEditing" class="text-gray-700 text-xl mt-2 text-base">
                 {{ company.description }}
               </p>
@@ -89,12 +89,12 @@
             </div>
           </div>
           <div class="md:flex md:items-center mb-6 p-5" @dblclick="editMore()">
-            <div class="md:w-1/3">
+            <div class="md:w-1/3 ">
               <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                Company history
+                Safety rules
               </label>
             </div>
-            <div class="md:w-2/3">
+            <div class="md:w-2/3 overflow-auto h-48">
               <p v-if="!additionalEditing" class="text-gray-700 text-xl mt-2 text-base">
                 {{ company.history }}
               </p>
