@@ -80,7 +80,7 @@
                                  :key="item.name">
                                 <FormulateInput
                                         v-bind="item"
-                                        :options="item.name === 'employee' ? employeesArray : item.options"
+
                                         v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)"
                                 >
                                 </FormulateInput>
@@ -284,7 +284,7 @@
                         type: "checkbox",
                         name: 'isLonger',
                         label: 'My meeting will last longer than 30 min.',
-                        required: ['required']
+                        validation: ['required']
                     },
                     {
                         type: "select",
@@ -322,7 +322,8 @@
                             this.employees.forEach(emp => {
                                 this.employeesArray.push({
                                     label: emp.label,
-                                    value: emp.value
+                                    value: emp.value,
+                                    id: emp.id
                                 })
                             })
                             console.log(JSON.stringify(this.employeesArray));
@@ -429,6 +430,11 @@
             }
             ,
             saveForm() {
+                this.items.forEach(x=> {
+                    if(x.name==='employee'){
+                        x.options = this.employeesArray;
+                    }
+                })
                 let formJson = JSON.stringify(this.items);
                 console.log(formJson)
                 console.log(this.items)

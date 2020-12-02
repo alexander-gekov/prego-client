@@ -11,7 +11,15 @@
                          :key="index">
                         <FormulateInput
                                 v-bind="item"
-                                :options="item.name === 'employee' ? employeesArray : item.options"
+                                :disabled="item.type==='submit'? !dateIsValid : false"
+                                @change="handleChange"
+                                :validation="item.name==='date-start' ? 'dateIsValid' : item.validation"
+                                :validation-rules="{
+                                dateIsValid: ({}) => dateIsValid
+                                }"
+                                :validation-messages="{
+                                dateIsValid: 'Time slot unavailable.'
+                                }"
                                 v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)"
                                 :input-class="['w-128']"
                         >
@@ -42,12 +50,6 @@
                     this.accentColor = response.data[0].accent_color;
                     this.formName = response.data[0].form_name;
                     this.employees = response.data[0].company.employees;
-                    this.employees.forEach(emp => {
-                        this.employeesArray.push({
-                            label: emp.first_name,
-                            value: emp.id
-                        })
-                    })
                 })
         },
         data() {
@@ -59,20 +61,29 @@
                 formName: '',
                 items: [],
                 employees: [],
-                employeesArray: [],
+                unavailable: [],
                 validation: [],
+                dateValid: true,
                 drag: false
+            }
+        },
+        computed: {
+            date_end: function() {
+                let date_end = new Date(this.values['date-start'])
+                return date_end.setMinutes(date_end.getMinutes() + this.values['duration'])
+            },
+            dateIsValid: function(){
+                return this.dateValid;
             }
         },
         methods: {
             submitForm() {
-
                 this.values["date-start"] = new moment(this.values["date-start"])
                 this.values["date-end"] = new moment(this.values["date-start"]).add(this.values["duration"], 'minutes')
 
                 let data = {
-                    "employee_id" : this.values["employee"].value,
-                    "answers" : JSON.stringify(this.values)
+                    "employee_id": this.values["employee"],
+                    "answers": JSON.stringify(this.values)
                 }
                 console.log(data);
                 axios.post(`http://localhost:8000/api/appointments`, data)
@@ -81,7 +92,42 @@
                         this.$router.back();
                     })
                     .catch()
-            }
+            },
+            handleChange() {
+                if (this.values['date-start'] && this.values['employee']) {
+                    axios.get('http://localhost:8000/api/appointments/unavailable/', {
+                        params: {
+                            date_start: this.values['date-start'],
+                            employee_id: this.values['employee']
+                        }
+                    }).then(response => {
+                        this.unavailable = response.data;
+                        let date = new Date(this.values['date-start'])
+                        let date_end = new moment(this.values["date-start"]).add(this.values["duration"], 'minutes')
+                        this.unavailable.every(x => {
+                            let start = new Date(x.date_start);
+                            let end = new Date(x.date_end);
+                            console.log('start ' + start)
+                            console.log('date ' + date)
+                            console.log('end ' + end)
+                            console.log('date_end '+ date_end.toDate())
+                            console.log(this.values['duration'])
+                            if (date.getTime() > start.getTime() && date.getTime() < end.getTime()) {
+                                this.dateValid = false;
+                                return false;
+                            } else if (date_end > start.getTime() && date_end < end.getTime()) {
+                                this.dateValid = false;
+                                return false;
+                            } else {
+                                this.dateValid = true;
+                                return true;
+                            }
+                        })
+                    })
+
+                }
+            },
+
         },
     }
 </script>
