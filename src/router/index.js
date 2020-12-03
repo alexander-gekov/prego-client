@@ -10,6 +10,8 @@ import FormCreator from "../components/Company/FormCreator";
 import DashboardCompanyOwner from "@/components/Company/Dashboard";
 import FormPage from "../components/Company/FormPage";
 import EmployeeDashboard from "@/components/employee/Dashboard"
+import TermsAndConditions from "@/components/legal/TermsAndConditions";
+import EvacuationRoutes from "@/components/legal/EvacuationRoutes";
 
 Vue.use(VueRouter)
 
@@ -59,6 +61,14 @@ const routes = [
         meta: {
             requiresAuth: true
         }
+    },
+    {
+        path: '/termsandconditions',
+        component: TermsAndConditions
+    },
+    {
+        path: '/evacuationroute',
+        component: EvacuationRoutes
     }
 ]
 

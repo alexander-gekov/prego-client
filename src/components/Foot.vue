@@ -31,9 +31,9 @@
                 <div class="flex-1">
                     <p class="uppercase text-gray-500 md:mb-6">Legal</p>
                     <ul class="list-reset mb-6">
-                        <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">Terms</a>
-                        </li>
+                      <router-link to="/termsandconditions">
+                        <h2 class="mt-2 inline-block mr-2 md:block md:mr-0">Terms and Conditions</h2>
+                      </router-link>
                         <li class="mt-2 inline-block mr-2 md:block md:mr-0">
                             <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">Privacy</a>
                         </li>
