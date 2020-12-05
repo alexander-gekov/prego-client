@@ -68,7 +68,9 @@ const routes = [
     },
     {
         path: '/evacuationroute',
-        component: EvacuationRoutes
+        name: 'evacuationroute',
+        component: EvacuationRoutes,
+        props: true
     }
 ]
 

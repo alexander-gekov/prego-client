@@ -140,11 +140,10 @@ import axios from 'axios'
 
 export default {
   name: 'CRUDEmployee',
-
+  props: ["employees"],
   data() {
     return {
       toggleModal: false,
-      employees: [],
       editing: false,
       employee_id: '',
 
@@ -169,15 +168,9 @@ export default {
 
     }
   },
-  mounted() {
-    axios.get('http://localhost:8000/api/' + localStorage.getItem("company_id") + '/employees')
-        .then(response => {
-          this.employees = response.data
-        })
-        .catch(error => {
-          console.log(error.message);
-        })
-  },
+  // created() {
+  //
+  // },
   methods: {
     addEmployee() {
       this.employees.push(this.form)

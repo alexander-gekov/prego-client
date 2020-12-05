@@ -20,15 +20,24 @@
               class="bg-white px-10 py-3 border border-blue-500 rounded-full shadow-lg hover:bg-gray-200 text-blue-500 focus:outline-none mr-8">
             <span class="text-xl">Email</span></button>
           <router-link :to="'/company/' + company_name + '/form/settings'" v-if="user_id == manager_id"
-                       class="bg-white px-10 py-3 border border-blue-500 rounded-full shadow-lg hover:bg-gray-200 text-blue-500 focus:outline-none">
+                       class="bg-white px-10 py-3 border border-blue-500 rounded-full shadow-lg hover:bg-gray-200 text-blue-500 focus:outline-none mr-8">
             <span class="text-xl">Settings</span></router-link>
+<!--          Evac page link-->
+          <router-link :to="{ name: 'evacuationroute', params: {company: company } }"
+                       class="bg-white px-10 py-3 border border-blue-500 rounded-full shadow-lg hover:bg-gray-200 text-blue-500 focus:outline-none">
+            <span class="text-xl">Evacuation</span></router-link>
         </div>
       </div>
     </div>
     <div class="flex p-24 bg-white">
       <div class="flex-1 px-12">
         <div class="text-4xl font-bold mb-10">Safety regulations</div>
-        <div class="text-2xl font-light">{{ company.history }}
+        <div class="text-2xl font-light">
+          <ol class="list-decimal leading-10">
+          <li class="ml-24" v-for="rule in safetyRules" :key="rule">
+            {{ rule }}
+          </li>
+        </ol>
         </div>
       </div>
       <div class="w-1/3 bg-white rounded-lg shadow-lg">
@@ -81,6 +90,8 @@ export default {
           this.company_name = response.data[0].company_name
           this.manager_id = response.data[0].manager_id;
           this.company_logo = response.data[0].logo_img
+          this.safetyRules = (response.data[0].history).split(";")
+          this.evac = 'http://localhost:8000/images/' + response.data[0].img1
         })
   },
   data() {
@@ -90,6 +101,8 @@ export default {
       company_name: '',
       company_logo: '',
       company: '',
+      evac: '',
+      safetyRules: [],
       slides: [
         {
           title: 'Slide 1',
