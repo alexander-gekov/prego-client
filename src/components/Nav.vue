@@ -46,23 +46,28 @@
 
     export default {
         data() {    
-            return {        
+            return {   
             languages: [            
                 { flag: 'us', language: 'en', title: 'English' }, 
                 { flag: 'nl', language: 'nl', title: 'Nederlands' }       
-            ]    
+            ]
             };
         },
         name: "Nav",
         computed: {
-            isLoggedIn: function () {
+            isLoggedIn() {
                 return this.$store.getters.isLoggedIn;
             },
-            role: () => {
-                return localStorage.getItem('role_id');
+            role(){
+                if(this.isLoggedIn)
+                {
+                    return localStorage.getItem('role_id');
+                }
+                else { return 0; }
             }
         },
         methods: {
+            
             // logout() {
             //     this.$store.dispatch('currentUser/logout')
             //     this.$router.push('/login')
