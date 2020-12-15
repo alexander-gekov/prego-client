@@ -5,15 +5,15 @@
             <div class="container px-3 mx-auto flex items-center flex-wrap flex-col md:flex-row">
                 <!--Left Col-->
                 <div class="w-full md:w-2/5 lg:-mt-32 items-start text-center md:text-left">
-                    <p class="uppercase tracking-loose w-full mt-5">Do you want to keep track of visitors?</p>
-                    <h1 class="my-4 text-3xl md:text-5xl font-bold leading-tight">Prego - Visitor Management System</h1>
-                    <p class="leading-normal text-2xl mb-8">No more Excel spreadsheets and paper notebooks!</p>
+                    <p class="uppercase tracking-loose w-full mt-5">{{ $t('landingPage.websitePurpose.smallerParagraph') }}</p>
+                    <h1 class="my-4 text-3xl md:text-5xl font-bold leading-tight">{{ $t('landingPage.websitePurpose.header') }}</h1>
+                    <p class="leading-normal text-2xl mb-8">{{ $t('landingPage.websitePurpose.biggerParagraph') }}</p>
 <!--                    <button class="mx-auto lg:mx-0 bg-purple-500 text-white hover:bg-purple-600 font-bold rounded-full my-6 py-4 px-8 shadow-lg">Request a demo</button>-->
                     <div class="w-10/12 md:max-w-xl mr-auto">
                         <form action="#" class="mt-2">
                             <div class="flex flex-col lg:flex-row items-center">
                                 <input type="email" class="w-full px-6 py-4 mr-2 bg-gray-100 shadow-inner rounded-full border border-gray-400 focus:outline-none" required placeholder="Email">
-                                <button class="bg-purple-600 hover:bg-purple-500 text-gray-200 px-5 py-2 rounded-full mt-5 lg:mt-0 shadow lg:-ml-40">Request Demo</button>
+                                <button class="bg-purple-600 hover:bg-purple-500 text-gray-200 px-5 py-2 rounded-full mt-5 lg:mt-0 shadow lg:-ml-40">{{ $t('landingPage.websitePurpose.requestDemo') }}</button>
                             </div>
                         </form>
                     </div>
@@ -40,15 +40,15 @@
         </div>
         <section class="bg-white border-b py-8">
             <div class="container max-w-5xl mx-auto m-8">
-                <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">What we offer</h1>
+                <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">{{ $t('landingPage.purposeExplained.header') }}</h1>
                 <div class="w-full mb-4">
                     <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
                 </div>
 
                 <div class="flex flex-wrap">
                     <div class="w-5/6 sm:w-1/2 p-6">
-                        <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">Check in with kiosk</h3>
-                        <p class="text-gray-600 mb-8">You can use the kiosk at the facility to register your visit, you can also scan the QR code and register through your phone.<br /><br />
+                        <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">{{ $t('landingPage.purposeExplained.checkIn') }}</h3>
+                        <p class="text-gray-600 mb-8">{{ $t('landingPage.purposeExplained.checkInOptions') }}<br /><br />
                         </p>
 
                     </div>
@@ -149,8 +149,8 @@
                     </div>
                     <div class="w-full sm:w-1/2 p-6 mt-6">
                         <div class="align-middle">
-                            <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">Pre-registration</h3>
-                            <p class="text-gray-600 mb-8">Easily register an upcoming visit from the luxury of your home.<br /><br />
+                            <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">{{ $t('landingPage.purposeExplained.preregistration') }}</h3>
+                            <p class="text-gray-600 mb-8">{{ $t('landingPage.purposeExplained.preregistrationOptions') }}<br /><br />
                             </p>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
 
             <div class="container mx-auto flex flex-wrap pt-4 pb-12">
 
-                <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">How it works</h1>
+                <h1 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">{{ $t('landingPage.workguide.header') }}</h1>
                 <div class="w-full mb-4">
                     <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
                 </div>
@@ -170,8 +170,8 @@
                 <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
                     <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
                         <a href="#" class="flex flex-wrap no-underline hover:no-underline">
-                            <p class="w-full text-gray-600 text-xs md:text-sm px-6 mb-5">Step 1</p>
-                            <div class="w-full font-bold text-xl text-gray-800 px-6">Companies make their own forms so visitors can fill them in.</div>
+                            <p class="w-full text-gray-600 text-xs md:text-sm px-6 mb-5">{{ $t('landingPage.workguide.step') }} 1</p>
+                            <div class="w-full font-bold text-xl text-gray-800 px-6">{{ $t('landingPage.workguide.stepOne') }}</div>
                             <p class="text-gray-800 text-base px-6 mb-5">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.
                             </p>
@@ -184,8 +184,8 @@
                 <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
                     <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
                         <a href="#" class="flex flex-wrap no-underline hover:no-underline">
-                            <p class="w-full text-gray-600 text-xs md:text-sm px-6 mb-5">Step 2</p>
-                            <div class="w-full font-bold text-xl text-gray-800 px-6">Visitors can then fill the form either with the kiosk or use the pre-registration.</div>
+                            <p class="w-full text-gray-600 text-xs md:text-sm px-6 mb-5">{{ $t('landingPage.workguide.step') }} 2</p>
+                            <div class="w-full font-bold text-xl text-gray-800 px-6">{{ $t('landingPage.workguide.stepTwo') }}</div>
                             <p class="text-gray-800 text-base px-6 mb-5">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.
                             </p>
@@ -198,8 +198,8 @@
                 <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
                     <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
                         <a href="#" class="flex flex-wrap no-underline hover:no-underline">
-                            <p class="w-full text-gray-600 text-xs md:text-sm px-6 mb-5">Step 3</p>
-                            <div class="w-full font-bold text-xl text-gray-800 px-6">Safely monitors who enters and leaves your building and notifies hosts.</div>
+                            <p class="w-full text-gray-600 text-xs md:text-sm px-6 mb-5">{{ $t('landingPage.workguide.step') }} 3</p>
+                            <div class="w-full font-bold text-xl text-gray-800 px-6">{{ $t('landingPage.workguide.stepThree') }}</div>
                             <p class="text-gray-800 text-base px-6 mb-5">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.
                             </p>
@@ -208,7 +208,7 @@
                 </div>
 
                 <div class="flex items-center mx-auto">
-                    <button class="mx-auto lg:mx-0 bg-gray-800 hover:bg-gray-700 text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg">See video</button>
+                    <button class="mx-auto lg:mx-0 bg-gray-800 hover:bg-gray-700 text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg">{{ $t('landingPage.workguide.seeVideo') }}</button>
                 </div>
 
             </div>

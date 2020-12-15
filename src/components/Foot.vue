@@ -15,32 +15,32 @@
 
 
                 <div class="flex-1">
-                    <p class="uppercase text-gray-500 md:mb-6">Links</p>
+                    <p class="uppercase text-gray-500 md:mb-6">{{ $t('footer.links') }}</p>
                     <ul class="list-reset mb-6">
                         <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">FAQ</a>
+                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">{{ $t('footer.faq') }}</a>
                         </li>
                         <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">Help</a>
+                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">{{ $t('footer.help') }}</a>
                         </li>
                         <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">Support</a>
+                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">{{ $t('footer.support') }}</a>
                         </li>
                     </ul>
                 </div>
                 <div class="flex-1">
-                    <p class="uppercase text-gray-500 md:mb-6">Legal</p>
+                    <p class="uppercase text-gray-500 md:mb-6">{{ $t('footer.legal') }}</p>
                     <ul class="list-reset mb-6">
                         <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">Terms</a>
+                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">{{ $t('footer.termsOfUse') }}</a>
                         </li>
                         <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">Privacy</a>
+                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">{{ $t('footer.privacy') }}</a>
                         </li>
                     </ul>
                 </div>
                 <div class="flex-1">
-                    <p class="uppercase text-gray-500 md:mb-6">Social</p>
+                    <p class="uppercase text-gray-500 md:mb-6">{{ $t('footer.social') }}</p>
                     <ul class="list-reset mb-6">
                         <li class="mt-2 inline-block mr-2 md:block md:mr-0">
                             <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">Facebook</a>
@@ -54,16 +54,16 @@
                     </ul>
                 </div>
                 <div class="flex-1">
-                    <p class="uppercase text-gray-500 md:mb-6">Company</p>
+                    <p class="uppercase text-gray-500 md:mb-6">{{ $t('footer.company') }}</p>
                     <ul class="list-reset mb-6">
                         <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">Official Blog</a>
+                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">{{ $t('footer.officialBlog') }}</a>
                         </li>
                         <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">About Us</a>
+                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">{{ $t('footer.aboutUs') }}</a>
                         </li>
                         <li class="mt-2 inline-block mr-2 md:block md:mr-0">
-                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">Contact</a>
+                            <a href="#" class="no-underline hover:underline text-gray-800 hover:text-orange-500">{{ $t('footer.contact') }}</a>
                         </li>
                     </ul>
                 </div>

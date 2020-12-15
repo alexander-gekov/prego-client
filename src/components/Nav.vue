@@ -11,26 +11,26 @@
                 <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">{{entry.title}}</h2>  
             </button>
             <router-link to="/" class="lg:mr-8">
-                <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Home</h2>
+                <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">{{ $t('menuitems.home') }}</h2>
             </router-link>
           <router-link to="/companies" class="lg:mr-8">
-            <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Companies</h2>
+            <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">{{ $t('menuitems.companies') }}</h2>
           </router-link>
             <router-link v-if="isLoggedIn && (role==='2' || role==='1')" to="/admin/dashboard" class="lg:mr-8">
-                <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Dashboard</h2>
+                <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">{{ $t('menuitems.dashboard') }}</h2>
             </router-link>
           <router-link v-if="isLoggedIn && (role==='3')" to="/office/dashboard" class="lg:mr-8">
-            <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Dashboard</h2>
+            <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">{{ $t('menuitems.dashboard') }}</h2>
           </router-link>
           <router-link v-if="isLoggedIn && (role==='4')" to="/employee/dashboard" class="lg:mr-8">
-            <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">Dashboard</h2>
+            <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">{{ $t('menuitems.dashboard') }}</h2>
           </router-link>
             <router-link v-if="!isLoggedIn" to="/login" class="lg:mr-8">
-                <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">{{ $t('logintitle') }}</h2>
+                <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">{{ $t('menuitems.login') }}</h2>
             </router-link>
             <div v-if="isLoggedIn" class="lg:mr-8">
-                <button @click.prevent="logout" class="p-4 text-gray-700 rounded-lg hover:bg-gray-300 align-middle">Log
-                    Out
+                <button @click.prevent="logout" class="p-4 text-gray-700 rounded-lg hover:bg-gray-300 align-middle">
+                    {{ $t('menuitems.logout') }}
                 </button>
             </div>
         </div>
