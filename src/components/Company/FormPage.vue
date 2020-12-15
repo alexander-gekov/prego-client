@@ -17,6 +17,13 @@
                         </FormulateInput>
                     </div>
                 </FormulateForm>
+                <button @click="generateQrCode">QR code</button>
+                <qrcode-stream @decode="onDecode"></qrcode-stream>
+                <div v-if="value"> 
+                    <!-- {{qrcode}} -->
+                    
+                    <qrcode-vue :value="value" :size="size" level="H"></qrcode-vue>
+                </div>
             </div>
         </div>
     </div>
@@ -30,9 +37,17 @@
 
     Vue.use(VueFormulate)
 
+    import QrcodeVue from 'qrcode.vue'
+
+    import VueQrcodeReader from "vue-qrcode-reader";
+
+    Vue.use(VueQrcodeReader);
+
     export default {
         name: "FormCreator",
-        components: {},
+        components: {
+            QrcodeVue
+        },
         created() {
             axios.get('http://localhost:8000/api/companies/?name=' + this.$route.params.company_name)
                 .then(response => {
@@ -56,7 +71,11 @@
                 validation: [],
                 values: {},
                 items: [],
-                drag: false
+                drag: false,
+                qrcode: null,
+
+                value: '',
+                size: 300,
             }
         },
         methods: {
@@ -68,7 +87,19 @@
                 axios.post(`http://localhost:8000/api/companies/${this.$route.params.company_name}/form/answers`, data)
                     .then(r => {
                         console.log(r.data);
-                        this.$router.back();
+                        this.value=r.data;
+                        // this.$router.back();
+                    })
+                    .catch()
+            },
+            generateQrCode()
+            {
+                // this.value="www.gmail.com";
+                axios.get('http://localhost:8000/api/QRcode')
+                    .then(r => {
+                        console.log(r.data);
+                        this.value=r.data;
+                        // this.qrcode=r.data;
                     })
                     .catch()
             }
