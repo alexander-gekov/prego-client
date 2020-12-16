@@ -97,6 +97,11 @@ const messages = {
             yes: 'Yes',
             no: 'No',
         },
+        companyPage: {
+            preregisterButton: 'Pre-register',
+            settingsButton: 'Settings',
+            aboutUsTitle: 'About us',
+        },
     }, 
    'nl': {
         menuitems: {
@@ -192,6 +197,11 @@ const messages = {
             content: 'Weet je dat zeker?',
             yes: 'Ja',
             no: 'Nee',
+        },
+        companyPage: {
+            preregisterButton: 'Pre-registreren',
+            settingsButton: 'Instellingen',
+            aboutUsTitle: 'Over ons',
         },
     }
 };

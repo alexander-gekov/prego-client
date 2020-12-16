@@ -18,17 +18,17 @@
                 </div>
                 <div class="flex mt-10">
                     <router-link :to="'/company/' + company_name + '/form'" class="bg-blue-500 px-10 py-3 rounded-full shadow-lg hover:bg-blue-600 text-white mr-8 focus:outline-none">
-                        <span class="text-xl">Pre-register</span></router-link>
+                        <span class="text-xl">{{ $t('companyPage.preregisterButton') }}</span></router-link>
                     <button class="bg-white px-10 py-3 border border-blue-500 rounded-full shadow-lg hover:bg-gray-200 text-blue-500 focus:outline-none mr-8">
                         <span class="text-xl">Email</span></button>
                     <router-link :to="'/company/' + company_name + '/form/settings'" v-if="user_id == manager_id" class="bg-white px-10 py-3 border border-blue-500 rounded-full shadow-lg hover:bg-gray-200 text-blue-500 focus:outline-none">
-                        <span class="text-xl">Settings</span></router-link>
+                        <span class="text-xl">{{ $t('companyPage.settingsButton') }}</span></router-link>
                 </div>
             </div>
         </div>
         <div class="flex p-24 bg-white">
             <div class="flex-1 px-12">
-                <div class="text-4xl font-bold mb-10">About us</div>
+                <div class="text-4xl font-bold mb-10">{{ $t('companyPage.aboutUsTitle') }}</div>
                 <div class="text-2xl font-light">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium
                     assumenda blanditiis consequuntur corporis cupiditate, debitis dolorem eaque eius enim error esse
                     harum illum impedit in libero, magni maiores minima minus natus nihil officiis perspiciatis placeat
