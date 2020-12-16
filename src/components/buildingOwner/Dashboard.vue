@@ -4,11 +4,11 @@
   <div class="flex justify-between">
     <div class="m-12 ml-48 w-1/3">
       <div class="pb-4">
-        <span class="links text-purple-500 underline">(owner)</span>
+        <span class="links text-purple-500 underline">({{ $t('dashboardBuildingOwner.section') }})</span>
       </div>
       <h2>SX TOWER </h2>
       <div class="below-title links">
-        <span>Address: Rachelsmolen 14</span>
+        <span>{{ $t('dashboardBuildingOwner.address') }}: Rachelsmolen 14</span>
       </div>
     </div>
   </div>

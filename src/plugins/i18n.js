@@ -73,6 +73,30 @@ const messages = {
             forgotPassword: 'Forgot password?',
             termsConditions: 'Terms and conditions',
         },
+        dashboardBuildingOwner: {
+            section: 'Owner',
+            address: 'Address',
+            content: {
+                title: 'Companies overview',
+                subtitle: 'View, add, update and delete company profiles',
+                addNewButton: 'Add new company',
+            },
+            crudCompanyForms: {
+                titleAdd: 'Add company',
+                companyName: 'Company name',
+                officeNumber: 'Office number',
+                managerName: 'Manager name',
+                ownerEmail: 'Owner email',
+                submitButton: 'Submit',
+                closeButton: 'Close',
+                saveButton: 'Save',
+            },
+        },
+        areYouSurePopUp: {
+            content: 'Are you sure?',
+            yes: 'Yes',
+            no: 'No',
+        },
     }, 
    'nl': {
         menuitems: {
@@ -144,7 +168,31 @@ const messages = {
             hidePassword: 'Verberg wachtwoord',
             forgotPassword: 'Wachtwoord vergeten?',
             termsConditions: 'Algemene voorwaarden',
-        }
+        },
+        dashboardBuildingOwner: {
+            section: 'Eigenaar',
+            address: 'Adres',
+            content: {
+                title: 'Bedrijven overzicht',
+                subtitle: 'Bedrijfsprofielen bekijken, toevoegen, bijwerken en verwijderen',
+                addNewButton: 'Nieuw bedrijf toevoegen',
+            },
+            crudCompanyForms: {
+                titleAdd: 'Bedrijf toevoegen',
+                companyName: 'Bedrijfsnaam',
+                officeNumber: 'Kantoor nummer',
+                managerName: 'Manager naam',
+                ownerEmail: 'E-mailadres van de eigenaar',
+                submitButton: 'Verzenden',
+                closeButton: 'Sluiten',
+                saveButton: 'Sparen',
+            },
+        },
+        areYouSurePopUp: {
+            content: 'Weet je dat zeker?',
+            yes: 'Ja',
+            no: 'Nee',
+        },
     }
 };
 

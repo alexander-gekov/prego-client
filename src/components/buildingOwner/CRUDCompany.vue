@@ -5,8 +5,8 @@
             <div class="bg-white w-full md:max-w-6xl rounded-lg shadow">
                 <div class="h-12 flex justify-between items-center border-b border-gray-200 m-4">
                     <div>
-                        <div class="text-xl font-bold text-gray-700">Companies overview</div>
-                        <div class="text-sm font-base text-gray-500">View, add, update and delete company profiles</div>
+                        <div class="text-xl font-bold text-gray-700">{{ $t('dashboardBuildingOwner.content.title') }}</div>
+                        <div class="text-sm font-base text-gray-500">{{ $t('dashboardBuildingOwner.content.subtitle') }}</div>
                     </div>
                     <div>
                         <div class="flex items-center justify-center w-full  shadow-md rounded-full">
@@ -14,7 +14,7 @@
                             <div class="flex items-center">
                                 <button @click='openModal'
                                         class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                    Add new company
+                                    {{ $t('dashboardBuildingOwner.content.addNewButton') }}
                                 </button>
                             </div>
 
@@ -23,12 +23,12 @@
                                  class="fixed overflow-x-hidden overflow-y-auto inset-0 flex justify-center items-center z-50">
                                 <div class="relative mx-auto w-1/3">
                                     <div class="bg-white w-full rounded shadow-2xl flex flex-col p-5">
-                                        <div class="text-2xl font-bold text-center">Add company</div>
+                                        <div class="text-2xl font-bold text-center">{{ $t('dashboardBuildingOwner.content.title') }}</div>
                                         <form class="bg-white rounded px-8 pt-6 pb-8 mb-4">
                                             <div class="mb-4">
                                                 <label class="block text-gray-700 text-sm font-bold mb-2"
                                                        for="companyname">
-                                                    Company name
+                                                    {{ $t('dashboardBuildingOwner.crudCompanyForms.companyName') }}
                                                 </label>
                                                 <input
                                                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -38,7 +38,7 @@
                                             <div class="mb-4">
                                                 <label class="block text-gray-700 text-sm font-bold mb-2"
                                                        for="officenumber">
-                                                    Office number
+                                                    {{ $t('dashboardBuildingOwner.crudCompanyForms.officeNumber') }}
                                                 </label>
                                                 <input
                                                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -48,7 +48,7 @@
                                             <div class="mb-4">
                                                 <label class="block text-gray-700 text-sm font-bold mb-2"
                                                        for="ownername">
-                                                    Manager name
+                                                    {{ $t('dashboardBuildingOwner.crudCompanyForms.managerName') }}
                                                 </label>
                                                 <input
                                                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -58,7 +58,7 @@
                                             <div class="mb-4">
                                                 <label class="block text-gray-700 text-sm font-bold mb-2"
                                                        for="owneremail">
-                                                    Owner email
+                                                    {{ $t('dashboardBuildingOwner.crudCompanyForms.ownerEmail') }}
                                                 </label>
                                                 <input
                                                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -72,12 +72,12 @@
                                                         @click="addCompany"
                                                         class="bg-purple-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline right"
                                                         type="button">
-                                                    Submit
+                                                    {{ $t('dashboardBuildingOwner.crudCompanyForms.submitButton') }}
                                                 </button>
                                                 <button
                                                         class="bg-red-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                                         @click="toggleModal = false" type="button">
-                                                    Close
+                                                    {{ $t('dashboardBuildingOwner.crudCompanyForms.closeButton') }}
                                                 </button>
                                             </div>
                                         </form>
@@ -106,7 +106,7 @@
                             </div>
                             <button v-if="editing" @click="save(company)"
                                     class="bg-purple-500 hover:bg-purple-700 text-white px-4 p-2 m-4 rounded-full shadow-md flex justify-center items-center focus:outline-none">
-                                Save
+                                {{ $t('dashboardBuildingOwner.crudCompanyForms.saveButton') }}
                             </button>
                         </div>
 
@@ -227,10 +227,10 @@
             deleteCompany(index, id) {
                 this.$confirm(
                     {
-                        message: `Are you sure?`,
+                        message: this.$t('areYouSurePopUp.content'),
                         button: {
-                            no: 'No',
-                            yes: 'Yes'
+                            no: this.$t('areYouSurePopUp.no'),
+                            yes: this.$t('areYouSurePopUp.yes')
                         },
                         /**
                          * Callback Function
