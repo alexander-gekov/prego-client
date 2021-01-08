@@ -32,8 +32,11 @@
             </div>
         </div>
         <div class="flex flex-wrap justify-center items-center ml-20 mr-20">
-            <CompanyCard v-for="company in filteredList" :key="company.id" :company="company"></CompanyCard>
+            <CompanyCard v-for="company in pageOfItems" :key="company.id" :company="company"></CompanyCard>
         </div>
+      <div class="card-footer flex flex-wrap justify-center items-center pb-0 pt-5">
+        <jw-pagination :pageSize=12 :items="filteredList" :styles="customStyles" @changePage="onChangePage"></jw-pagination>
+      </div>
         <section class="sticky bottom-0 ">
             <div class="search-section m-20 mx-0 bg-white p-5">
                 <div class="flex justify-center">
@@ -54,6 +57,18 @@
   import axios from 'axios'
   import CompanyCard from './CompanyCard'
 
+  const customStyles = {
+    ul: {
+    },
+    li: {
+      display: 'inline-block',
+      // border: '1px solid gray',
+    },
+    a: {
+      color: 'gray',
+      transition: 'background-color .3s',
+    }
+  };
 export default {
   name: "CompaniesHome",
   components: {
@@ -64,9 +79,15 @@ export default {
       search: '',
       sort: '',
       companies: [],
+      pageOfItems: [],
+      customStyles
     }
   },
   methods: {
+    onChangePage(pageOfItems) {
+      // update page of items
+      this.pageOfItems = pageOfItems;
+    },
     sortTable(key, direction){
       this.sort = `${key} > ${direction}`
       if (direction === 'asc') {
