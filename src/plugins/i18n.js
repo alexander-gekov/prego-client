@@ -102,6 +102,36 @@ const messages = {
             settingsButton: 'Settings',
             aboutUsTitle: 'About us',
         },
+        dashboardCompanyOwner: {
+            title: 'Manage your company',
+            subtitle: 'Double click below to edit',
+            mainInfo: {
+                company: 'Company name',
+                office: 'Office number',
+                manager: 'Manager name',
+                email: 'Email'
+            },
+            companyDetails: {
+                section: 'Company details',
+                description: 'Description',
+                history: 'Company history',
+                editButton: 'Edit',
+            },
+            employeesList: {
+                section: 'Employees overview',
+                subtitle: "View, add, update and delete employee's profiles",
+                saveButton: 'Save',
+            },
+            addNewEmployeeForm: {
+                addNewButton: 'Add new employee',
+                title: 'Add employee',
+                firstName: 'Employee first name',
+                lastName: 'Last name',
+                email: 'Email',
+                submit: 'Submit',
+                close: 'Close',
+            }
+        }
     }, 
    'nl': {
         menuitems: {
@@ -203,6 +233,36 @@ const messages = {
             settingsButton: 'Instellingen',
             aboutUsTitle: 'Over ons',
         },
+        dashboardCompanyOwner: {
+            title: 'Beheer uw bedrijf',
+            subtitle: 'Dubbelklik hieronder om te bewerken',
+            mainInfo: {
+                company: 'Bedrijfsnaam',
+                office: 'Kantoor nummer',
+                manager: 'Manager naam',
+                email: 'Email'
+            },
+            companyDetails: {
+                section: 'Bedrijfsgegevens',
+                description: 'Omschrijving',
+                history: 'Bedrijfsgeschiedenis',
+                editButton: 'Bewerk',
+            },
+            employeesList: {
+                section: 'Medewerkersoverzicht',
+                subtitle: "Medewerkersprofielen bekijken, toevoegen, bijwerken en verwijderen",
+                saveButton: 'Sparen',
+            },
+            addNewEmployeeForm: {
+                addNewButton: 'Nieuwe medewerker toevoegen',
+                title: 'Medewerker toevoegen',
+                firstName: 'Voornaam van de werknemer',
+                lastName: 'Achternaam',
+                email: 'Email',
+                submit: 'Verzenden',
+                close: 'Sluiten',
+            }
+        }
     }
 };
 

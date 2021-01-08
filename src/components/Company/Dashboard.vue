@@ -3,8 +3,8 @@
 
     <div class="flex justify-center">
       <div class="flex-wrap justify-center my-20">
-        <h2 class="flex-col text-center"> Manage your company</h2>
-        <p class="flex-col text-center text-gray-500 my-6 text-xl">Double click below to edit</p>
+        <h2 class="flex-col text-center"> {{ $t('dashboardCompanyOwner.title') }}</h2>
+        <p class="flex-col text-center text-gray-500 my-6 text-xl">{{ $t('dashboardCompanyOwner.subtitle') }}</p>
       </div>
     </div>
 
@@ -13,7 +13,7 @@
       <div class="rounded overflow-hidden m-8 w-56 h-56 jus">
         <div class="flex justify-center "><i class="fas fa-building text-6xl"></i></div>
         <div class="px-6 py-4">
-          <div class="text-2xl mb-2">Company name</div>
+          <div class="text-2xl mb-2">{{ $t('dashboardCompanyOwner.mainInfo.company') }}</div>
           <p v-if="!editing" class="text-gray-700 text-xl mt-2 text-base">
             {{ company.company_name }}
           </p>
@@ -25,7 +25,7 @@
       <div class="rounded overflow-hidden m-8 w-56 h-56">
         <div class="flex justify-center"><i class="fas fa-sort-numeric-up text-6xl"></i></div>
         <div class="px-6 py-4">
-          <div class="text-2xl mb-2">Office number</div>
+          <div class="text-2xl mb-2">{{ $t('dashboardCompanyOwner.mainInfo.office') }}</div>
           <p v-if="!editing" class="text-gray-700 text-xl mt-2 text-base">
             {{ company.office_number }}
           </p>
@@ -37,7 +37,7 @@
       <div class=" rounded overflow-hidden m-8 w-56 h-56">
         <div class="flex justify-center "><i class="fas fa-user text-6xl"></i></div>
         <div class="px-6 py-4">
-          <div class="text-2xl mb-2">Manager name</div>
+          <div class="text-2xl mb-2">{{ $t('dashboardCompanyOwner.mainInfo.manager') }}</div>
           <p v-if="!editing" class="text-gray-700 text-xl mt-2 text-base">
             {{ company.manager_name }}
           </p>
@@ -49,7 +49,7 @@
       <div class=" rounded overflow-hidden m-8 w-56 h-56">
         <div class="flex justify-center"><i class="fas fa-envelope-open-text text-6xl"></i></div>
         <div class="px-6 py-4">
-          <div class="text-2xl mb-2">Email</div>
+          <div class="text-2xl mb-2">{{ $t('dashboardCompanyOwner.mainInfo.email') }}</div>
           <span v-if="!editing" class="text-gray-700 text-xl mt-2 text-base">
             user email
           </span>
@@ -71,7 +71,7 @@
     </div>
     <div class="flex justify-center ">
       <div class=" flex-initial w-2/6 m-5 rounded-lg shadow bg-gray-100">
-        <h2 class="text-center p-4">Company Details</h2>
+        <h2 class="text-center p-4">{{ $t('dashboardCompanyOwner.companyDetails.section') }}</h2>
         <div>
           <div class=" md:flex justify-center md:items-center mb-6 p-5 ">
 
@@ -88,7 +88,7 @@
           <div class="md:flex md:items-center mb-6 p-5">
             <div class="md:w-1/3">
               <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                Description
+                {{ $t('dashboardCompanyOwner.companyDetails.description') }}
               </label>
             </div>
             <div class="md:w-2/3">
@@ -100,7 +100,7 @@
           <div class="md:flex md:items-center mb-6 p-5">
             <div class="md:w-1/3">
               <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                Company history
+                {{ $t('dashboardCompanyOwner.companyDetails.history') }}
               </label>
             </div>
             <div class="md:w-2/3">
@@ -116,7 +116,7 @@
               <button @click="save(companies[0])"
                       class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-5 rounded"
                       type="button">
-                Edit
+                {{ $t('dashboardCompanyOwner.companyDetails.editButton') }}
               </button>
             </div>
           </div>
