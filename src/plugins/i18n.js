@@ -131,6 +131,10 @@ const messages = {
                 submit: 'Submit',
                 close: 'Close',
             }
+        },
+        dashboardEmployee: {
+            title: 'Welcome',
+            subtitle: 'REVIEW YOUR DAILY SCHEDULE',
         }
     }, 
    'nl': {
@@ -262,6 +266,10 @@ const messages = {
                 submit: 'Verzenden',
                 close: 'Sluiten',
             }
+        },
+        dashboardEmployee: {
+            title: 'Welkom',
+            subtitle: 'BEKIJK JE DAGELIJKSE SCHEMA',
         }
     }
 };

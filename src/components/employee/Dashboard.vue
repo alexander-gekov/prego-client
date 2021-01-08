@@ -2,9 +2,9 @@
 <div>
   <div class="flex justify-between">
     <div class="m-12 ml-48 w-1/3">
-      <h2>Welcome, employee_name! </h2>
+      <h2>{{ $t('dashboardEmployee.title') }}, employee_name! </h2>
       <div class="below-title links">
-        <span>Review your daily schedule </span>
+        <span>{{ $t('dashboardEmployee.subtitle') }} </span>
       </div>
     </div>
   </div>
