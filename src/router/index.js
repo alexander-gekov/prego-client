@@ -10,6 +10,9 @@ import FormCreator from "../components/Company/FormCreator";
 import DashboardCompanyOwner from "@/components/Company/Dashboard";
 import FormPage from "../components/Company/FormPage";
 import EmployeeDashboard from "@/components/employee/Dashboard"
+import TermsAndConditions from "@/components/legal/TermsAndConditions";
+import EvacuationRoutes from "@/components/legal/EvacuationRoutes";
+import DashboardAdmin from "@/components/admin/Dashboard";
 
 Vue.use(VueRouter)
 
@@ -19,7 +22,7 @@ const routes = [
         component: Login
     },
     {
-        path: '/admin/dashboard',
+        path: '/building/dashboard',
         component: DashboardBuildingOwner,
         meta: {
             requiresAuth: true
@@ -56,6 +59,23 @@ const routes = [
     {
         path: '/employee/dashboard',
         component: EmployeeDashboard,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/termsandconditions',
+        component: TermsAndConditions
+    },
+    {
+        path: '/evacuationroute',
+        name: 'evacuationroute',
+        component: EvacuationRoutes,
+        props: true
+    },
+    {
+        path: '/admin/dashboard',
+        component: DashboardAdmin,
         meta: {
             requiresAuth: true
         }

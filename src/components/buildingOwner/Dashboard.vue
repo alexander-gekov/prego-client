@@ -1,14 +1,11 @@
 <template>
 <div>
 
-  <div class="flex justify-between">
-    <div class="m-12 ml-48 w-1/3">
-      <div class="pb-4">
-        <span class="links text-purple-500 underline">(owner)</span>
-      </div>
-      <h2>SX TOWER </h2>
+  <div class="flex justify-center text-center">
+    <div class="m-12 w-1/3">
+      <h2>{{  building_owner.building_name }} </h2>
       <div class="below-title links">
-        <span>Address: Rachelsmolen 14</span>
+        <span>Building manager: {{building_owner.first_name}} {{building_owner.last_name}}</span>
       </div>
     </div>
   </div>
@@ -29,6 +26,7 @@ export default {
 data(){
     return {
       user: localStorage.getItem('user'),
+      building_owner: '',
       companies: []
     }
 },
@@ -40,6 +38,13 @@ data(){
             .catch(error => {
               console.log(error.message);
             })
+    axios.get('http://localhost:8000/api/building_owner/' + localStorage.getItem('user_id'))
+        .then(response => {
+          this.building_owner = response.data[0]
+        })
+        .catch(error => {
+          console.log(error.message);
+        })
   }
 }
 </script>

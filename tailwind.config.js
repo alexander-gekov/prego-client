@@ -17,6 +17,7 @@ module.exports = {
       'body': ['Open Sans'],
       'ptserif': ['"PT Serif"', 'serif'],
       'lora': ['Lora', 'serif'],
+      'opensans': ['"Open Sans"', 'sans-serif']
 
     },
     extend: {
