@@ -13,6 +13,7 @@ import EmployeeDashboard from "@/components/employee/Dashboard"
 import TermsAndConditions from "@/components/legal/TermsAndConditions";
 import EvacuationRoutes from "@/components/legal/EvacuationRoutes";
 import DashboardAdmin from "@/components/admin/Dashboard";
+import WelcomeMessage from "../components/WelcomeMessage";
 
 Vue.use(VueRouter)
 
@@ -79,7 +80,13 @@ const routes = [
         meta: {
             requiresAuth: true
         }
+    },
+    {
+        path: '/welcome/:name',
+        component: WelcomeMessage,
+        props: true
     }
+
 ]
 
 // 3. Create the router instance and pass the `routes` option
