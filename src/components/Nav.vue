@@ -16,7 +16,11 @@
           <router-link to="/companies" class="lg:mr-8">
             <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">{{ $t('menuitems.companies') }}</h2>
           </router-link>
-            <router-link v-if="isLoggedIn && (role==='2' || role==='1')" to="/admin/dashboard" class="lg:mr-8">
+
+          <router-link v-if="isLoggedIn && (role==='1')" to="/admin/dashboard" class="lg:mr-8">
+            <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">{{ $t('menuitems.dashboard') }}</h2>
+          </router-link>
+            <router-link v-if="isLoggedIn && (role==='2')" to="/building/dashboard" class="lg:mr-8">
                 <h2 class="p-4 text-gray-700 rounded-lg hover:bg-gray-300">{{ $t('menuitems.dashboard') }}</h2>
             </router-link>
           <router-link v-if="isLoggedIn && (role==='3')" to="/office/dashboard" class="lg:mr-8">

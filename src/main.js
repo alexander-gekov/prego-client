@@ -11,11 +11,13 @@ import './assets/css/formulate.css'
 import i18n from '@/plugins/i18n'
 import messages from '@/plugins/i18n'
 import FlagIcon from 'vue-flag-icon'
+import JwPagination from 'jw-vue-pagination'
 
 Vue.use(FlagIcon)
 Vue.use(VueFormulate)
 Vue.use(VueConfirmDialog)
 Vue.component('vue-confirm-dialog', VueConfirmDialog.default)
+Vue.component('jw-pagination', JwPagination)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios

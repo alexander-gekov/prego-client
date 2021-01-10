@@ -93,7 +93,7 @@
                          class="flex justify-between items-center h-16 p-4 my-6  rounded-lg border border-gray-100 shadow-md">
                         <div class="flex items-center">
                             <img class="rounded-full h-12 w-12"
-                                 :src="company.logo_img"
+                                 :src="getImage(company.logo_img)"
                                  alt="Logo"/>
                             <div class="ml-4 flex">
                                 <div v-if="!editing" class="font-semibold text-gray-600 mr-6">{{company.company_name}}
@@ -171,6 +171,7 @@
               ],
               password: "",
               gLength: 9,
+              image: ''
             }
         },
         created() {
@@ -183,7 +184,13 @@
                 })
         },
         methods: {
-            addCompany() {
+          getImage(image){
+            if((/\.(gif|jpg|jpeg|tiff|png)$/i).test(image)){
+              return image = 'http://localhost:8000/images/' + image
+            }else {
+              return image
+            }
+          },            addCompany() {
                 // eslint-disable-next-line no-unused-vars
                 this.companies.push(this.form)
                 this.toggleModal = false;
@@ -195,7 +202,7 @@
                 }).then(response => {
                     console.log("registered")
                     this.manager_id = response.data.user.id;
-                    console.log("man id = " + this.manager_id)
+                    console.log("manager id = " + this.manager_id)
                     axios.post('/api/companies', {
                         "building_owner_id": localStorage.getItem('user_id'),
                         "manager_id": this.manager_id,

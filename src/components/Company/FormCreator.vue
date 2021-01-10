@@ -77,13 +77,15 @@
                         <transition-group type="transition" :name="!drag ? 'flip-list' : null">
                             <div class="flex mb-8"
                                  v-for="(item,index) in items"
-                                 :key="index">
+                                 :key="item.name">
                                 <FormulateInput
                                         v-bind="item"
+
                                         v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)"
                                 >
                                 </FormulateInput>
-                                <div class="flex" v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)">
+                                <div class="flex"
+                                     v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)">
                                     <button class="text-green-500 ml-5 self-start focus:outline-none"
                                             @click="selectedEl = index">
                                         <svg class="w-6 h-6 transform hover:-translate-y-1  hover:scale-110 transition duration-500 ease-in-out hover:text-green-600"
@@ -282,7 +284,7 @@
                         type: "checkbox",
                         name: 'isLonger',
                         label: 'My meeting will last longer than 30 min.',
-                        required: ['required']
+                        validation: ['required']
                     },
                     {
                         type: "select",
@@ -292,12 +294,21 @@
                         validation: ['required']
                     },
                     {
+                        type: "select",
+                        name: 'employee',
+                        label: "Who are you visiting",
+                        options: this.employeesArray,
+                        validation: ['required']
+                    },
+                    {
                         name: 'submit',
                         type: 'submit',
                         label: 'Submit',
                     }
                 ],
-                drag: false
+                drag: false,
+                employees: [],
+                employeesArray: [],
             }
         },
         created() {
@@ -305,8 +316,21 @@
                 .then(response => {
                     this.company_id = response.data[0].id
                     this.company_name = response.data[0].company_name
-                    console.log(this.company_name);
+                    axios.get('http://localhost:8000/api/employees/?company_id=' + this.company_id)
+                        .then(resp => {
+                            this.employees = resp.data;
+                            this.employees.forEach(emp => {
+                                this.employeesArray.push({
+                                    label: emp.label,
+                                    value: emp.value,
+                                    id: emp.id
+                                })
+                            })
+                            console.log(JSON.stringify(this.employeesArray));
+                        })
                 })
+
+
         },
         methods: {
             addField(type) {
@@ -406,6 +430,11 @@
             }
             ,
             saveForm() {
+                this.items.forEach(x=> {
+                    if(x.name==='employee'){
+                        x.options = this.employeesArray;
+                    }
+                })
                 let formJson = JSON.stringify(this.items);
                 console.log(formJson)
                 console.log(this.items)
@@ -415,10 +444,10 @@
                     "json_form": formJson,
                     "accent_color": this.accentColor,
                     "form_name": this.formName,
-                    "company_name": this.company_name
+                    "company_id": this.company_id
                 };
 
-                axios.post('http://localhost:8000/api/companies/' + this.company_name + '/form', data)
+                axios.post('http://localhost:8000/api/companies/' + this.company_id + '/form', data)
                     .then(response => {
                         console.log(response.data)
                         this.$router.back();

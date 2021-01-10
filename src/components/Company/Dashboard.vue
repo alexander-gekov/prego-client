@@ -46,19 +46,7 @@
               v-if="editing" v-model="company.manager_name" type="text">
         </div>
       </div>
-      <div class=" rounded overflow-hidden m-8 w-56 h-56">
-        <div class="flex justify-center"><i class="fas fa-envelope-open-text text-6xl"></i></div>
-        <div class="px-6 py-4">
-          <div class="text-2xl mb-2">{{ $t('dashboardCompanyOwner.mainInfo.email') }}</div>
-          <span v-if="!editing" class="text-gray-700 text-xl mt-2 text-base">
-            user email
-          </span>
-          <input
-              class="w-11/12 text-center mr-6 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              v-if="editing" v-model="company.office_number" type="text">
-        </div>
-      </div>
-      <button v-if="editing" @click="editing = !editing"
+      <button v-if="editing" @click="save(company)"
               class=" bg-purple-500 hover:bg-purple-700 p-4 m-4 rounded-full shadow-md flex justify-center items-center focus:outline-none">
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
              width="24" height="24"
@@ -75,8 +63,8 @@
         <div>
           <div class=" md:flex justify-center md:items-center mb-6 p-5 ">
 
-            <div class="profile-img rounded-full ">
-              <img class="rounded-full"
+            <div class="profile-img rounded-3xl w-48 h-48">
+              <img class="rounded-3xl object-cover"
                    :src="this.image"
                    alt="ProfileImage"/>
               <div class="file rounded-full h-4 w-4 flex items-center justify-center shadow-xl">
@@ -85,38 +73,85 @@
               </div>
             </div>
           </div>
-          <div class="md:flex md:items-center mb-6 p-5">
+          <div class="md:flex md:items-center mb-6 p-5" @dblclick="editMore()">
             <div class="md:w-1/3">
               <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
                 {{ $t('dashboardCompanyOwner.companyDetails.description') }}
               </label>
             </div>
-            <div class="md:w-2/3">
-              <textarea
+            <div class="md:w-2/3 overflow-auto h-48">
+              <p v-if="!additionalEditing" class="text-gray-700 text-xl mt-2 text-base">
+                {{ company.description }}
+              </p>
+              <textarea v-if="additionalEditing"
                   class="appearance-none bg-transparent border-b border-black w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none border-b border-black"
-                  name="Text1" cols="40" rows="3"></textarea>
+                  v-model="company.description" cols="40" rows="3"></textarea>
             </div>
           </div>
-          <div class="md:flex md:items-center mb-6 p-5">
-            <div class="md:w-1/3">
+          <div class="md:flex md:items-center mb-6 p-5" @dblclick="editMore()">
+            <div class="md:w-1/3 ">
               <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
-                {{ $t('dashboardCompanyOwner.companyDetails.history') }}
+                Safety rules <br><span class="text-gray-400 text-sm"> (separated by coma)</span>
               </label>
             </div>
-            <div class="md:w-2/3">
-              <textarea
+            <div class="md:w-2/3 overflow-auto h-48">
+              <p v-if="!additionalEditing" class="text-gray-700 text-xl mt-2 text-base">
+                {{ company.history }}
+              </p>
+              <textarea v-if="additionalEditing"
                   class="appearance-none bg-transparent border-b border-black w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none border-b border-black"
-                  name="Text1" cols="40" rows="3"></textarea>
+                  v-model="company.history" cols="40" rows="3"></textarea>
+            </div>
+          </div>
+<!--          Three images -->
+          <div class="md:flex md:items-center mb-6 p-5" @dblclick="editMore()">
+            <div class="md:w-1/3">
+              <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+                Additional images
+              </label>
+            </div>
+            <div v-if="!additionalEditing" class="md:w-2/3">
+              <span class=""><b>Evacuation report: </b>{{company.img1}}</span><br>
+              <span class=""><b>Image: </b> {{company.img2}}</span><br>
+              <span class=""><b>Image:  </b>{{company.img3}}</span>
+            </div>
+            <div v-if="additionalEditing"  class="md:w-2/3 overflow-auto flex text-center">
+              <label class="w-28 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue-200 hover:text-gray-900">
+                <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                </svg>
+                <span class="mt-2 text-base leading-normal text-sm">Evacuation route</span>
+                <input type='file' class="hidden" @change="onEvacuation"/>
+              </label>
+              <label class="w-28 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue-200 hover:text-gray-900">
+                <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                </svg>
+                <span class="mt-2 text-base leading-normal text-sm">Select an image</span>
+                <input type='file' class="hidden" @change="onImg2"/>
+              </label>
+              <label class="w-28 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue-200 hover:text-gray-900">
+              <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+              </svg>
+              <span class="mt-2 text-base leading-normal text-sm">Select an image</span>
+              <input type='file' class="hidden" @change="onImg3"/>
+            </label>
             </div>
           </div>
 
           <div class="md:flex md:items-center">
             <div class="md:w-1/3"></div>
             <div class="md:w-2/3 mb-4">
-              <button @click="save(companies[0])"
+              <button v-if="!additionalEditing" @click="editMore"
                       class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-5 rounded"
                       type="button">
                 {{ $t('dashboardCompanyOwner.companyDetails.editButton') }}
+              </button>
+              <button v-if="additionalEditing" @click="save(company)"
+                      class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-5 rounded"
+                      type="button">
+                Save
               </button>
             </div>
           </div>
@@ -124,8 +159,21 @@
         </div>
       </div>
       <div class="flex-initial w-3/6 mx-5">
-        <CRUDEmployee></CRUDEmployee>
+        <CRUDEmployee v-bind:employees="employees"></CRUDEmployee>
       </div>
+    </div>
+
+<!--    Alert -->
+    <!--Toast-->
+    <div v-if="success" class="alert-toast fixed bottom-0 right-0 m-8 w-5/6 md:w-full max-w-sm">
+      <input type="checkbox" class="hidden" id="footertoast">
+
+      <label class="close cursor-pointer flex items-start justify-between w-full p-2 bg-green-500 h-24 rounded shadow-lg text-white" title="close" for="footertoast">
+        Information edited successfully!
+        <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+          <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+        </svg>
+      </label>
     </div>
   </div>
 </template>
@@ -140,13 +188,14 @@ export default {
   components: {CRUDEmployee},
   data() {
     return {
-      user: localStorage.getItem('user'),
       companies: [],
       editing: false,
-      pictureUpload: '',
+      additionalEditing: false,
+      employees: [],
+      success: false,
+      pictureUpload: '', evacuation: '', img2: '', img3: '',
       image: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-      company: '',
-
+      company: ''
     }
   },
   methods: {
@@ -154,29 +203,60 @@ export default {
       this.pictureUpload = event.target.files[0];
       this.image = URL.createObjectURL(this.pictureUpload);
     },
+    onEvacuation(event) {
+      this.evacuation = event.target.files[0];
+    },
+    onImg2(event) {
+      this.img2 = event.target.files[0];
+    },
+    onImg3(event) {
+      this.img2 = event.target.files[0];
+    },
     edit() {
       this.editing = !this.editing;
+    },
+    editMore() {
+      this.additionalEditing = !this.additionalEditing;
     },
     save(company) {
       let formData = new FormData();
 
-      formData.append("image", this.pictureUpload, this.pictureUpload.name);
+      formData.append("image", this.pictureUpload);
       formData.append("company_name", this.company.company_name);
       formData.append("office_number", this.company.office_number);
-      formData.append("id", this.companies[0].id);
+      formData.append("description", this.company.description);
+      formData.append("history", this.company.history);
+      formData.append("img1", this.evacuation);
+      formData.append("img2", this.img2);
+      formData.append("img3", this.img3);
+
+      formData.append("id", this.company.id);
+
+      formData.append('_method', 'PUT')
 
       for (var pair of formData.entries()) {
         console.log(pair[0]+ ', ' + pair[1]);
       }
-
-      axios.put('/api/companies/' + company.id, formData)
-          .then((res) => {
-            console.log(res);
+      let config = { headers: { 'Content-Type': 'multipart/form-data' } }
+      axios.post('/api/companies/' + company.id, formData, config)
+          .then(() => {
+            this.editing = false;
+            this.additionalEditing = false;
+            this.success = true;
           })
           .catch((error) => {
             console.log(error);
           });
     },
+    getEmployees(){
+      axios.get('http://localhost:8000/api/' + localStorage.getItem("company_id") + '/employees')
+          .then(response => {
+            this.employees = response.data
+          })
+          .catch(error => {
+            console.log(error.message);
+          })
+    }
   },
   created() {
     axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/company')
@@ -184,7 +264,9 @@ export default {
           this.companies = response.data
           console.log(this.companies)
           this.company = this.companies[0]
+          this.image = 'http://localhost:8000/images/' + this.company.logo_img
           localStorage.setItem("company_id", this.company.id)
+          this.getEmployees()
         })
         .catch(error => {
           console.log(error.message);
@@ -241,5 +323,26 @@ h2 {
   right: 0;
   top: 0;
 }
+
+
+/*Alert */
+/*Toast open/load animation*/
+.alert-toast {
+  -webkit-animation: slide-in-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  animation: slide-in-right 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+/*Toast close animation*/
+.alert-toast input:checked ~ * {
+  -webkit-animation: fade-out-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  animation: fade-out-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+/* -------------------------------------------------------------
+ * Animations generated using Animista * w: http://animista.net,
+ * ---------------------------------------------------------- */
+
+@-webkit-keyframes slide-in-top{0%{-webkit-transform:translateY(-1000px);transform:translateY(-1000px);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@keyframes slide-in-top{0%{-webkit-transform:translateY(-1000px);transform:translateY(-1000px);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@-webkit-keyframes slide-out-top{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(-1000px);transform:translateY(-1000px);opacity:0}}@keyframes slide-out-top{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(-1000px);transform:translateY(-1000px);opacity:0}}@-webkit-keyframes slide-in-bottom{0%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@keyframes slide-in-bottom{0%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@-webkit-keyframes slide-out-bottom{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}}@keyframes slide-out-bottom{0%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}100%{-webkit-transform:translateY(1000px);transform:translateY(1000px);opacity:0}}@-webkit-keyframes slide-in-right{0%{-webkit-transform:translateX(1000px);transform:translateX(1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}@keyframes slide-in-right{0%{-webkit-transform:translateX(1000px);transform:translateX(1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}@-webkit-keyframes fade-out-right{0%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}100%{-webkit-transform:translateX(50px);transform:translateX(50px);opacity:0}}@keyframes fade-out-right{0%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}100%{-webkit-transform:translateX(50px);transform:translateX(50px);opacity:0}}
+
 
 </style>

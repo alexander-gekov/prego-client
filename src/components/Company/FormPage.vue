@@ -11,6 +11,15 @@
                          :key="index">
                         <FormulateInput
                                 v-bind="item"
+                                :disabled="item.type==='submit'? !dateIsValid : false"
+                                @change="handleChange"
+                                :validation="item.name==='date-start' ? 'dateIsValid' : item.validation"
+                                :validation-rules="{
+                                dateIsValid: ({}) => dateIsValid
+                                }"
+                                :validation-messages="{
+                                dateIsValid: 'Time slot unavailable.'
+                                }"
                                 v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)"
                                 :input-class="['w-128']"
                         >
@@ -33,6 +42,7 @@
     import VueFormulate from '@braid/vue-formulate'
     import Vue from 'vue'
     import axios from 'axios'
+    import moment from 'moment'
 
 
     Vue.use(VueFormulate)
@@ -49,42 +59,52 @@
             QrcodeVue
         },
         created() {
-            axios.get('http://localhost:8000/api/companies/?name=' + this.$route.params.company_name)
+            axios.get('/api/companies/' + this.$route.params.id + '/form')
                 .then(response => {
-                    console.log(response.data)
-                    this.company_id = response.data[0].id
-                    axios.get('/api/companies/' + response.data[0].id + '/form')
-                        .then(response => {
-                            this.items = JSON.parse(response.data[0].json_form);
-                            this.accentColor = response.data[0].accent_color;
-                            this.formName = response.data[0].form_name;
-                        })
+                    this.items = JSON.parse(response.data[0].json_form);
+                    this.accentColor = response.data[0].accent_color;
+                    this.formName = response.data[0].form_name;
+                    this.employees = response.data[0].company.employees;
                 })
-
         },
         data() {
             return {
                 show: true,
-                company_id: '',
-                formName: '',
-                accentColor: '',
-                validation: [],
+                // company_id: '',
                 values: {},
+                accentColor: '',
+                formName: '',
                 items: [],
                 drag: false,
                 qrcode: null,
-
                 value: '',
                 size: 300,
+                employees: [],
+                unavailable: [],
+                validation: [],
+                dateValid: true
+            }
+        },
+        computed: {
+            date_end: function() {
+                let date_end = new Date(this.values['date-start'])
+                return date_end.setMinutes(date_end.getMinutes() + this.values['duration'])
+            },
+            dateIsValid: function(){
+                return this.dateValid;
             }
         },
         methods: {
             submitForm() {
+                this.values["date-start"] = new moment(this.values["date-start"])
+                this.values["date-end"] = new moment(this.values["date-start"]).add(this.values["duration"], 'minutes')
+
                 let data = {
-                    "company_id": this.company_id,
-                    "answers": this.values
+                    "employee_id": this.values["employee"],
+                    "answers": JSON.stringify(this.values)
                 }
-                axios.post(`http://localhost:8000/api/companies/${this.$route.params.company_name}/form/answers`, data)
+                console.log(data);
+                axios.post(`http://localhost:8000/api/appointments`, data)
                     .then(r => {
                         console.log(r.data);
                         this.value=r.data;
@@ -102,7 +122,42 @@
                         // this.qrcode=r.data;
                     })
                     .catch()
-            }
+            },
+            handleChange() {
+                if (this.values['date-start'] && this.values['employee']) {
+                    axios.get('http://localhost:8000/api/appointments/unavailable/', {
+                        params: {
+                            date_start: this.values['date-start'],
+                            employee_id: this.values['employee']
+                        }
+                    }).then(response => {
+                        this.unavailable = response.data;
+                        let date = new Date(this.values['date-start'])
+                        let date_end = new moment(this.values["date-start"]).add(this.values["duration"], 'minutes')
+                        this.unavailable.every(x => {
+                            let start = new Date(x.date_start);
+                            let end = new Date(x.date_end);
+                            console.log('start ' + start)
+                            console.log('date ' + date)
+                            console.log('end ' + end)
+                            console.log('date_end '+ date_end.toDate())
+                            console.log(this.values['duration'])
+                            if (date.getTime() > start.getTime() && date.getTime() < end.getTime()) {
+                                this.dateValid = false;
+                                return false;
+                            } else if (date_end > start.getTime() && date_end < end.getTime()) {
+                                this.dateValid = false;
+                                return false;
+                            } else {
+                                this.dateValid = true;
+                                return true;
+                            }
+                        })
+                    })
+
+                }
+            },
+
         },
     }
 </script>

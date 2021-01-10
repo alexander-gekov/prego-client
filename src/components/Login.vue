@@ -102,8 +102,10 @@ export default {
       this.$store.dispatch('login', {email, password})
           .then(() => {
             let role = localStorage.getItem("role_id")
-            if (role === "1" || role === "2") {
+            if (role === "1") {
               this.$router.push('/admin/dashboard')
+            } else if (role === "2") {
+              this.$router.push('/building/dashboard')
             } else if (role === "3") {
               this.$router.push('/office/dashboard')
             } else if (role === "4") {
