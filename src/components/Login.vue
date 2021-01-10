@@ -2,8 +2,8 @@
 
   <div class="flex justify-center mt-10 mb-16">
     <div class="form flex flex-col justify-center">
-      <div class="text-center text-5xl text-gray-700 mb-4">Log in</div>
-      <div class="text-center text-gray-600 text-sm mb-10">Welcome to Prego building registration manager! <br>
+      <div class="text-center text-5xl text-gray-700 mb-4">{{ $t('logInPage.header') }}</div>
+      <div class="text-center text-gray-600 text-sm mb-10">{{ $t('logInPage.subheader') }} <br>
       </div>
       <form class="mb-4 flex flex-col justify-between">
         <div v-if="authError!=''" class="flex items-center bg-red-300 text-white text-sm font-bold px-4 py-3"
@@ -20,18 +20,18 @@
           </label>
           <input
               class="shadow appearance-none border rounded w-full py-2 px-3 md:pr-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="email" v-model="user.email" type="text" placeholder="Enter your email">
+              id="email" v-model="user.email" type="text" :placeholder="$t('logInPage.emailPlaceholder')">
         </div>
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-            Password
+            {{ $t('logInPage.password') }}
           </label>
           <input
               class="shadow appearance-none border rounded w-full py-2 px-3 md:pr-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="password" v-model="user.password" :type="type" placeholder="Enter your password">
+              id="password" v-model="user.password" :type="type" :placeholder="$t('logInPage.passwordPlaceholder')">
           <label class="inline-flex items-center mt-3">
             <input class="mr-2 form-checkbox h-5 w-5 text-purple-600" type="checkbox" @click="showPassword">{{
-              messagePassword
+              show
             }}</label>
         </div>
 
@@ -40,17 +40,17 @@
           <button @click.prevent="login"
                   class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-16 rounded focus:outline-none focus:shadow-outline"
                   type="button">
-            Log in
+            {{ $t('logInPage.header') }}
           </button>
         </div>
       </form>
       <footer class="flex flex-col md:flex-row text-center mx-auto">
         <a class="inline-block align-baseline font-bold text-sm text-gray-600 hover:text-gray-800 mr-4"
            href="#">
-          Forgot Password?
+          {{ $t('logInPage.forgotPassword') }}
         </a>
         <a class="inline-block align-baseline font-bold text-sm text-gray-600 hover:text-gray-800" href="#">
-          Terms and Conditions
+          {{ $t('logInPage.termsConditions') }}
         </a>
       </footer>
     </div>
@@ -62,7 +62,6 @@
 </template>
 
 <script>
-
 export default {
 
   name: "LogIn",
@@ -70,7 +69,7 @@ export default {
   data() {
     return {
       type: 'password',
-      messagePassword: 'Show Password',
+      messagePassword: this.$t('logInPage.showPassword'),
       user: {
         email: '',
         password: '',
@@ -78,16 +77,19 @@ export default {
       authError: '',
     }
   },
-
+  computed: {
+    show() {
+      return this.messagePassword;
+    }
+  },
   methods: {
-
     showPassword() {
       if (this.type === 'password') {
         this.type = 'text'
-        this.messagePassword = 'Hide Password'
+        this.messagePassword = this.$t('logInPage.hidePassword')
       } else {
         this.type = 'password'
-        this.messagePassword = 'Show Password'
+        this.messagePassword = this.$t('logInPage.showPassword')
       }
     },
     login() {

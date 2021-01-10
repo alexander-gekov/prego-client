@@ -12,7 +12,7 @@
       </div>
       <div class="flex flex-wrap w-full">
         <div class="flex-1">
-          <h6 class="text-center mx-auto mb-4 pl-12 mt-1 font-lora">Office: {{ company.office_number }}</h6>
+          <h6 class="text-center mx-auto mb-4 pl-12 mt-1 font-lora">{{ $t('companiesHome.office') }}: {{ company.office_number }}</h6>
         </div>
         <div class=" flex-1 ">
           <router-link

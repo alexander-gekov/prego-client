@@ -8,8 +8,12 @@ import axios from 'axios'
 import VueConfirmDialog from 'vue-confirm-dialog'
 import VueFormulate from '@braid/vue-formulate'
 import './assets/css/formulate.css'
+import i18n from '@/plugins/i18n'
+import messages from '@/plugins/i18n'
+import FlagIcon from 'vue-flag-icon'
 import JwPagination from 'jw-vue-pagination'
 
+Vue.use(FlagIcon)
 Vue.use(VueFormulate)
 Vue.use(VueConfirmDialog)
 Vue.component('vue-confirm-dialog', VueConfirmDialog.default)
@@ -22,6 +26,8 @@ window.axios = axios
 axios.defaults.baseURL = 'http://localhost:8000'
 
 new Vue({
+  i18n,
+  messages,
   render: h => h(App),
   router,
   axios,

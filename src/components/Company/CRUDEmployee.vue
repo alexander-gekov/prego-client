@@ -5,8 +5,8 @@
       <div class="bg-white w-full md:max-w-6xl rounded-lg shadow">
         <div class="h-12 flex justify-between items-center border-b border-gray-200 m-4">
           <div>
-            <div class="text-xl font-bold text-gray-700">Employees overview</div>
-            <div class="text-sm font-base text-gray-500">View, add, update and delete employee's profiles</div>
+            <div class="text-xl font-bold text-gray-700">{{ $t('dashboardCompanyOwner.employeesList.section') }}</div>
+            <div class="text-sm font-base text-gray-500">{{ $t('dashboardCompanyOwner.employeesList.subtitle') }}</div>
           </div>
           <div>
             <div class="flex items-center justify-center w-full  shadow-md rounded-full">
@@ -14,7 +14,7 @@
               <div class="flex items-center">
                 <button @click='openModal'
                         class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                  Add new employee
+                  {{ $t('dashboardCompanyOwner.addNewEmployeeForm.addNewButton') }}
                 </button>
               </div>
 
@@ -23,12 +23,12 @@
                    class="fixed overflow-x-hidden overflow-y-auto inset-0 flex justify-center items-center z-50">
                 <div class="relative mx-auto w-1/3">
                   <div class="bg-white w-full rounded shadow-2xl flex flex-col p-5">
-                    <div class="text-2xl font-bold text-center">Add employee</div>
+                    <div class="text-2xl font-bold text-center">{{ $t('dashboardCompanyOwner.addNewEmployeeForm.title') }}</div>
                     <form class="bg-white rounded px-8 pt-6 pb-8 mb-4">
                       <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2"
                                for="name">
-                          Employee first name
+                          {{ $t('dashboardCompanyOwner.addNewEmployeeForm.firstName') }}
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -38,7 +38,7 @@
                       <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2"
                                for="lname">
-                          Last name
+                          {{ $t('dashboardCompanyOwner.addNewEmployeeForm.lastName') }}
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -48,7 +48,7 @@
                       <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2"
                                for="email">
-                          Email
+                          {{ $t('dashboardCompanyOwner.addNewEmployeeForm.email') }}
                         </label>
                         <input
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -63,12 +63,12 @@
                             @click="addEmployee()"
                             class="bg-purple-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline right"
                             type="button">
-                          Submit
+                          {{ $t('dashboardCompanyOwner.addNewEmployeeForm.submit') }}
                         </button>
                         <button
                             class="bg-red-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                             @click="toggleModal = false" type="button">
-                          Close
+                          {{ $t('dashboardCompanyOwner.addNewEmployeeForm.close') }}
                         </button>
                       </div>
                     </form>
@@ -101,7 +101,7 @@
 
               <button v-if="editing" @click="save(employee)"
                       class="bg-purple-500 hover:bg-purple-700 text-white px-4 p-2 m-4 rounded-full shadow-md flex justify-center items-center focus:outline-none">
-                Save
+                {{ $t('dashboardCompanyOwner.employeesList.saveButton') }}
               </button>
             </div>
 
@@ -210,10 +210,10 @@ export default {
     deleteEmployee(index, id) {
       this.$confirm(
           {
-            message: `Are you sure?`,
+            message: this.$t('areYouSurePopUp.content'),
             button: {
-              no: 'No',
-              yes: 'Yes'
+              no: this.$t('areYouSurePopUp.no'),
+              yes: this.$t('areYouSurePopUp.yes')
             },
             /**
              * Callback Function

@@ -26,6 +26,13 @@
                         </FormulateInput>
                     </div>
                 </FormulateForm>
+                <button @click="generateQrCode">QR code</button>
+                <qrcode-stream @decode="onDecode"></qrcode-stream>
+                <div v-if="value"> 
+                    <!-- {{qrcode}} -->
+                    
+                    <qrcode-vue :value="value" :size="size" level="H"></qrcode-vue>
+                </div>
             </div>
         </div>
     </div>
@@ -40,9 +47,17 @@
 
     Vue.use(VueFormulate)
 
+    import QrcodeVue from 'qrcode.vue'
+
+    import VueQrcodeReader from "vue-qrcode-reader";
+
+    Vue.use(VueQrcodeReader);
+
     export default {
         name: "FormCreator",
-        components: {},
+        components: {
+            QrcodeVue
+        },
         created() {
             axios.get('/api/companies/' + this.$route.params.id + '/form')
                 .then(response => {
@@ -60,11 +75,14 @@
                 accentColor: '',
                 formName: '',
                 items: [],
+                drag: false,
+                qrcode: null,
+                value: '',
+                size: 300,
                 employees: [],
                 unavailable: [],
                 validation: [],
-                dateValid: true,
-                drag: false
+                dateValid: true
             }
         },
         computed: {
@@ -89,7 +107,19 @@
                 axios.post(`http://localhost:8000/api/appointments`, data)
                     .then(r => {
                         console.log(r.data);
-                        this.$router.back();
+                        this.value=r.data;
+                        // this.$router.back();
+                    })
+                    .catch()
+            },
+            generateQrCode()
+            {
+                // this.value="www.gmail.com";
+                axios.get('http://localhost:8000/api/QRcode')
+                    .then(r => {
+                        console.log(r.data);
+                        this.value=r.data;
+                        // this.qrcode=r.data;
                     })
                     .catch()
             },
