@@ -23,6 +23,15 @@
                                 v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)"
                                 :input-class="['w-128']"
                         >
+                            <template v-if="item.name==='Terms of Use'" #label="{ label, id }">
+                                <label class="font-semibold text-sm ml-2" :for="id">
+                                    I agree to the
+                                    <router-link class="text-blue-600 hover:underline" to="/termsandconditions">
+                                        Terms of Use
+                                    </router-link>
+                                    and GDPR
+                                </label>
+                            </template>
                         </FormulateInput>
                     </div>
                 </FormulateForm>

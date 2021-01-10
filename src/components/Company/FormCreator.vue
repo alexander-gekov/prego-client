@@ -80,13 +80,22 @@
                                  :key="item.name">
                                 <FormulateInput
                                         v-bind="item"
-
                                         v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)"
                                 >
+                                    <template v-if="item.name==='Terms of Use'" #label="{ label, id }">
+                                        <label class="font-semibold text-sm ml-2" :for="id">
+                                            I agree to the
+                                            <router-link class="text-blue-600 hover:underline" to="/termsandconditions">
+                                                Terms of Use
+                                            </router-link>
+                                            and GDPR
+                                        </label>
+                                    </template>
                                 </FormulateInput>
                                 <div class="flex"
                                      v-if="item.name != 'duration' || (item.name === 'duration' && values.isLonger === true)">
-                                    <button class="text-green-500 ml-5 self-start focus:outline-none"
+                                    <button v-if="item.name != 'Terms of Use'"
+                                            class="text-green-500 ml-5 self-start focus:outline-none"
                                             @click="selectedEl = index">
                                         <svg class="w-6 h-6 transform hover:-translate-y-1  hover:scale-110 transition duration-500 ease-in-out hover:text-green-600"
                                              fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -103,6 +112,8 @@
                                             item.name != 'firstname' &&
                                             item.name != 'lastname' &&
                                             item.name != 'email' &&
+                                            item.name != 'Terms of Use' &&
+                                            item.name != 'visitorReports' &&
                                             items.length > 2"
                                             @click="items.splice(index,1)">
                                         <svg class="w-6 h-6 transform hover:-translate-y-1  hover:scale-110 transition duration-500 ease-in-out hover:text-red-600"
@@ -287,6 +298,18 @@
                         validation: ['required']
                     },
                     {
+                        type: "checkbox",
+                        name: 'visitorReports',
+                        label: 'I am not from restricted location - Veldhoven.',
+                        help: 'Staff in Ede is not allowed to see Veldhoven visitors.',
+                        validation: ['required']
+                    },
+                    {
+                        type: "checkbox",
+                        name: 'Terms of Use',
+                        validation: ['required']
+                    },
+                    {
                         type: "select",
                         name: 'duration',
                         label: "Please select duration of your meeting",
@@ -430,8 +453,8 @@
             }
             ,
             saveForm() {
-                this.items.forEach(x=> {
-                    if(x.name==='employee'){
+                this.items.forEach(x => {
+                    if (x.name === 'employee') {
                         x.options = this.employeesArray;
                     }
                 })
