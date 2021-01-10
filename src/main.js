@@ -8,10 +8,12 @@ import axios from 'axios'
 import VueConfirmDialog from 'vue-confirm-dialog'
 import VueFormulate from '@braid/vue-formulate'
 import './assets/css/formulate.css'
+import JwPagination from 'jw-vue-pagination'
 
 Vue.use(VueFormulate)
 Vue.use(VueConfirmDialog)
 Vue.component('vue-confirm-dialog', VueConfirmDialog.default)
+Vue.component('jw-pagination', JwPagination)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios

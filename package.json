@@ -18,6 +18,8 @@
     "@fullcalendar/vue": "^5.4.0",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
+    "jw-vue-pagination": "^1.0.3",
+    "mailtoui": "^1.0.3",
     "moment": "^2.29.1",
     "pikaday": "^1.8.2",
     "tailwindcss": "^1.8.10",
