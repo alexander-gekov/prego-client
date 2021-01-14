@@ -101,7 +101,7 @@ export default {
     }
   },
   created() {
-    axios.get('http://localhost:8000/companies')
+    axios.get('https://prego-api.herokuapp.com/companies')
     .then(response => {
       console.log(response.data)
       this.companies = response.data

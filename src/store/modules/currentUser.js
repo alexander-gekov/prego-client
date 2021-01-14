@@ -7,7 +7,7 @@ const getters = {};
 const actions = {
     // eslint-disable-next-line no-empty-pattern
     loginUser( {}, user){
-        axios.post("http://localhost:8000/api/login",{
+        axios.post("https://prego-api.herokuapp.com/api/login",{
             email: user.email,
             password: user.password,
             password_confirmation: user.password
@@ -22,7 +22,7 @@ const actions = {
         })
     },
     logout(){
-        axios.post('http://localhost:8000/api/logout')
+        axios.post('https://prego-api.herokuapp.com/api/logout')
         return new Promise((resolve) => {
             localStorage.removeItem('token')
             localStorage.removeItem('user_id')

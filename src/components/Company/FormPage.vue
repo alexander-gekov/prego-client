@@ -37,9 +37,9 @@
                 </FormulateForm>
                 <button @click="generateQrCode">QR code</button>
                 <qrcode-stream @decode="onDecode"></qrcode-stream>
-                <div v-if="value"> 
+                <div v-if="value">
                     <!-- {{qrcode}} -->
-                    
+
                     <qrcode-vue :value="value" :size="size" level="H"></qrcode-vue>
                 </div>
             </div>
@@ -113,7 +113,7 @@
                     "answers": JSON.stringify(this.values)
                 }
                 console.log(data);
-                axios.post(`http://localhost:8000/api/appointments`, data)
+                axios.post(`https://prego-api.herokuapp.com/api/appointments`, data)
                     .then(r => {
                         console.log(r.data);
                         this.value=r.data;
@@ -124,7 +124,7 @@
             generateQrCode()
             {
                 // this.value="www.gmail.com";
-                axios.get('http://localhost:8000/api/QRcode')
+                axios.get('https://prego-api.herokuapp.com/api/QRcode')
                     .then(r => {
                         console.log(r.data);
                         this.value=r.data;
@@ -134,7 +134,7 @@
             },
             handleChange() {
                 if (this.values['date-start'] && this.values['employee']) {
-                    axios.get('http://localhost:8000/api/appointments/unavailable/', {
+                    axios.get('https://prego-api.herokuapp.com/api/appointments/unavailable/', {
                         params: {
                             date_start: this.values['date-start'],
                             employee_id: this.values['employee']

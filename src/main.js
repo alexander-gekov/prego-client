@@ -23,7 +23,7 @@ Vue.config.productionTip = false
 Vue.prototype.$http = axios
 
 window.axios = axios
-axios.defaults.baseURL = 'http://localhost:8000'
+axios.defaults.baseURL = 'https://prego-api.herokuapp.com'
 
 new Vue({
   i18n,

@@ -31,14 +31,14 @@ data(){
     }
 },
   created() {
-    axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/companies')
+    axios.get('https://prego-api.herokuapp.com/api/' + localStorage.getItem('user_id') + '/companies')
             .then(response => {
               this.companies = response.data
             })
             .catch(error => {
               console.log(error.message);
             })
-    axios.get('http://localhost:8000/api/building_owner/' + localStorage.getItem('user_id'))
+    axios.get('https://prego-api.herokuapp.com/api/building_owner/' + localStorage.getItem('user_id'))
         .then(response => {
           this.building_owner = response.data[0]
         })

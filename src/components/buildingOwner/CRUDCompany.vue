@@ -175,7 +175,7 @@
             }
         },
         created() {
-            axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/companies')
+            axios.get('https://prego-api.herokuapp.com/api/' + localStorage.getItem('user_id') + '/companies')
                 .then(response => {
                     this.companies = response.data
                 })
@@ -186,7 +186,7 @@
         methods: {
           getImage(image){
             if((/\.(gif|jpg|jpeg|tiff|png)$/i).test(image)){
-              return image = 'http://localhost:8000/images/' + image
+              return image = 'https://prego-api.herokuapp.com/images/' + image
             }else {
               return image
             }

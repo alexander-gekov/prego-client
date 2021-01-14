@@ -335,11 +335,11 @@
             }
         },
         created() {
-            axios.get('http://localhost:8000/api/companies/?name=' + this.$route.params.company_name)
+            axios.get('https://prego-api.herokuapp.com/api/companies/?name=' + this.$route.params.company_name)
                 .then(response => {
                     this.company_id = response.data[0].id
                     this.company_name = response.data[0].company_name
-                    axios.get('http://localhost:8000/api/employees/?company_id=' + this.company_id)
+                    axios.get('https://prego-api.herokuapp.com/api/employees/?company_id=' + this.company_id)
                         .then(resp => {
                             this.employees = resp.data;
                             this.employees.forEach(emp => {
@@ -470,7 +470,7 @@
                     "company_id": this.company_id
                 };
 
-                axios.post('http://localhost:8000/api/companies/' + this.company_id + '/form', data)
+                axios.post('https://prego-api.herokuapp.com/api/companies/' + this.company_id + '/form', data)
                     .then(response => {
                         console.log(response.data)
                         this.$router.back();

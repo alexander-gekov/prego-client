@@ -249,7 +249,7 @@ export default {
           });
     },
     getEmployees(){
-      axios.get('http://localhost:8000/api/' + localStorage.getItem("company_id") + '/employees')
+      axios.get('https://prego-api.herokuapp.com/api/' + localStorage.getItem("company_id") + '/employees')
           .then(response => {
             this.employees = response.data
           })
@@ -259,12 +259,12 @@ export default {
     }
   },
   created() {
-    axios.get('http://localhost:8000/api/' + localStorage.getItem('user_id') + '/company')
+    axios.get('https://prego-api.herokuapp.com/api/' + localStorage.getItem('user_id') + '/company')
         .then(response => {
           this.companies = response.data
           console.log(this.companies)
           this.company = this.companies[0]
-          this.image = 'http://localhost:8000/images/' + this.company.logo_img
+          this.image = 'https://prego-api.herokuapp.com/images/' + this.company.logo_img
           localStorage.setItem("company_id", this.company.id)
           this.getEmployees()
         })

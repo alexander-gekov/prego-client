@@ -36,7 +36,7 @@ export default {
   methods: {
     getImage(image){
       if((/\.(gif|jpg|jpeg|tiff|png)$/i).test(image)){
-        return image = 'http://localhost:8000/images/' + image
+        return image = 'https://prego-api.herokuapp.com/images/' + image
       }else {
         return image
       }

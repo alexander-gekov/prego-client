@@ -74,7 +74,7 @@ export default {
   methods: {
     getImage(image) {
       if ((/\.(gif|jpg|jpeg|tiff|png)$/i).test(image)) {
-        return image = 'http://localhost:8000/images/' + image
+        return image = 'https://prego-api.herokuapp.com/images/' + image
       } else {
         return image
       }
@@ -82,7 +82,7 @@ export default {
   },
   created() {
     //make request to get info about company
-    axios.get('http://localhost:8000/api/companies/?name=' + this.$route.params.company_name)
+    axios.get('https://prego-api.herokuapp.com/api/companies/?name=' + this.$route.params.company_name)
         .then(response => {
           console.log(response.data)
           this.company = response.data[0]
@@ -91,7 +91,7 @@ export default {
           this.manager_id = response.data[0].manager_id;
           this.company_logo = response.data[0].logo_img
           this.safetyRules = (response.data[0].history).split(";")
-          this.evac = 'http://localhost:8000/images/' + response.data[0].img1
+          this.evac = 'https://prego-api.herokuapp.com/images/' + response.data[0].img1
         })
   },
   data() {

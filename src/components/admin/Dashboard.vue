@@ -30,7 +30,7 @@ export default {
     }
   },
   created() {
-    axios.get('http://localhost:8000/api/building_owner')
+    axios.get('https://prego-api.herokuapp.com/api/building_owner')
         .then(response => {
           this.building_owners = response.data
         })
